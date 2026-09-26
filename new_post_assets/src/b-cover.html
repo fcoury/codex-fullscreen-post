@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="b-fig.css">
+<style>
+  body{width:1200px;height:630px;padding:0;overflow:hidden;position:relative;
+    background:radial-gradient(ellipse 70% 60% at 85% 0%,rgba(255,107,74,.10),transparent 70%),#0d0e12}
+  .screen{position:absolute;inset:22px;border:1.5px solid var(--frame);border-radius:6px;display:flex;flex-direction:column}
+  .top{display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1.5px solid var(--line);font-size:14px;color:var(--muted)}
+  .top b{color:var(--ink);font-weight:700}
+  .main{flex:1;display:flex;padding:34px 20px 0 44px;position:relative}
+  .you{font-size:15px;color:var(--muted)}
+  .you::before{content:"› ";color:var(--coral)}
+  h1{margin:18px 0 0;font-size:66px;line-height:1.02;font-weight:800;letter-spacing:-.035em}
+  h1 span{color:var(--coral)}
+  .sub{margin-top:22px;font-size:18px;color:var(--muted);line-height:1.6}
+  .sub i{font-style:normal;color:var(--teal)}
+  .fold{margin-top:22px;display:inline-flex;gap:10px;border:1.5px dashed var(--line);border-radius:4px;padding:7px 12px;font-size:14px;color:var(--muted)}
+  .fold b{color:var(--teal);font-weight:600}
+  .rail{position:absolute;right:16px;top:20px;bottom:10px;width:6px;background:#1a1c24;border-radius:3px}
+  .rail::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--coral);border-radius:3px}
+  .hints{display:flex;gap:26px;padding:0 20px 10px 44px;font-size:13px;color:var(--muted)}
+  .hints kbd{font-size:12px;margin-right:6px}
+  .composer{margin:0 16px;border:2px solid var(--coral);border-radius:4px;padding:13px 16px;font-size:17px;display:flex;align-items:center;gap:10px}
+  .composer .p{color:var(--coral)}
+  .cur{display:inline-block;width:11px;height:22px;background:var(--coral);vertical-align:middle}
+  .status{display:flex;justify-content:space-between;padding:10px 20px;font-size:13px;color:var(--muted)}
+  .status .dot{color:var(--teal)}
+</style></head><body>
+<div class="screen">
+  <div class="top"><span><b>codex</b> 0.157.0</span><span>fullscreen</span></div>
+  <div class="main">
+    <div>
+      <div class="you">what's new?</div>
+      <h1>Codex CLI goes<br><span>fullscreen.</span></h1>
+      <div class="sub">Long sessions that stay fast. A prompt that stays put.<br>Copies that <i>paste back clean</i>.</div>
+      <div class="fold"><b>▸</b> 12,408 earlier lines · loaded when you scroll</div>
+    </div>
+    <div class="rail"></div>
+  </div>
+  <div class="hints"><span><kbd>/tui</kbd>switch view</span><span><kbd>/feedback</kbd>tell us</span></div>
+  <div class="composer"><span class="p">›</span> give it a fair try<span class="cur"></span></div>
+  <div class="status"><span><span class="dot">●</span> ready</span><span>~/your-project</span></div>
+</div>
+</body></html>

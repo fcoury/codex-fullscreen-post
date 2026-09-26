@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+/* "Elsewhere" theme: terminal-native, dark, monospace. Reuses the a-fig markup. */
+:root{
+  --ink:#ece8df; --muted:#8e919c; --line:#2a2d36; --frame:#3b3f4b;
+  --teal:#3fd7b3; --teal-bg:#0f201c;
+  --blue:#7aa2ff; --blue-bg:#131a2b;
+  --violet:#b69cff; --violet-bg:#1a1530;
+  --amber:#ffc24b; --amber-bg:#221b0c;
+  --coral:#ff6b4a; --coral-bg:#2a140e;
+  --gray-bg:#16181e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d0e12;color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+body{width:800px;padding:40px}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.eyebrow::before{content:"# ";color:var(--coral)}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
+code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.box{border:1.5px solid var(--line);border-radius:4px;background:#0d0e12}
+.num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:3px!important;
+  background:var(--coral)!important;color:#0d0e12!important;font-size:12.5px;font-weight:800;flex:none}
+/* overrides for hardcoded light values in the shared markup */
+.term{background:#101117!important;border-radius:6px!important}
+.region,.card,.tip,li,.collapsed{border-radius:4px!important}
+.ln{background:#2b3552!important}
+.scroll{background:#1d2335!important}
+.collapsed{color:var(--teal)!important}
+.kbd{background:#0d0e12!important;color:var(--violet)!important}
+li{background:#0d0e12!important}
+.ico{background:#0d0e12!important;border-radius:4px!important}
+.ico svg[stroke]{stroke:currentColor}
+.k .ico{color:var(--teal)} .s .ico{color:var(--violet)}
+kbd{background:#0d0e12!important;color:var(--ink)!important}
+h2,h3,li h3{font-weight:700!important;letter-spacing:-.01em}
+h2{font-size:18px!important}
+.sub,.tip{font-size:14.5px!important}
+li{font-size:15px!important}
+.region b{font-size:15.5px!important;width:190px!important}
+.region p{font-size:14.5px!important}
+.collapsed,.collapsed span{font-family:inherit!important;font-size:13px!important}

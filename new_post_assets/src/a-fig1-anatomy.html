@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="a-fig.css">
+<style>
+  .term{border:2px solid var(--frame);border-radius:18px;overflow:hidden;background:#fbfcfe}
+  .bar{height:42px;border-bottom:1.5px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 18px}
+  .bar i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--frame)}
+  .bar span{margin-left:auto;font-size:14px;color:var(--muted)}
+  .inner{padding:16px;display:flex;flex-direction:column;gap:12px}
+  .region{position:relative;border-radius:12px;border:1.5px solid;padding:14px 18px;display:flex;align-items:baseline;gap:16px}
+  .region b{font-size:17px;font-weight:600;flex:none;width:168px}
+  .region p{margin:0;font-size:15.5px;line-height:1.45;color:var(--muted)}
+  .t{background:var(--blue-bg);border-color:var(--blue);display:block;padding-right:34px}
+  .t .row{display:flex;align-items:baseline;gap:16px}
+  .ln{height:8px;border-radius:4px;background:#c9d5f6;margin-top:12px}
+  .collapsed{margin-top:16px;border:1.5px dashed var(--teal);background:var(--teal-bg);border-radius:9px;padding:10px 14px;
+    display:flex;align-items:center;gap:12px;font-size:14px;color:#2f7d70;font-family:'JetBrains Mono',monospace}
+  .collapsed span{margin-left:auto;font-family:Inter,sans-serif;color:var(--muted);font-size:14px}
+  .scroll{position:absolute;right:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:#dde5fb}
+  .scroll:after{content:"";position:absolute;left:0;right:0;top:0;height:38px;border-radius:3px;background:var(--blue)}
+  .w{background:var(--amber-bg);border-color:var(--amber)}
+  .h{background:var(--violet-bg);border-color:var(--violet)}
+  .c{background:var(--coral-bg);border-color:var(--coral);border-width:2px}
+  .c b .p{font-family:'JetBrains Mono',monospace;color:var(--coral);margin-right:8px}
+  .st{background:var(--gray-bg);border-color:var(--line)}
+</style></head><body>
+<div class="eyebrow" style="margin-bottom:22px">The fullscreen view</div>
+<div class="term">
+  <div class="bar"><i></i><i></i><i></i><span>codex</span></div>
+  <div class="inner">
+    <div class="region t">
+      <div class="row"><b>Transcript</b><p>No scrollback limit. History loads as you scroll to it.</p></div>
+      <div class="ln" style="width:58%"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:44%"></div>
+      <div class="collapsed">▸ ran tests · 400 lines<span>collapsed until you need it</span></div>
+      <div class="ln" style="width:66%;margin-top:16px"></div><div class="ln" style="width:50%"></div>
+      <div class="scroll"></div>
+    </div>
+    <div class="region w"><b>Warnings</b><p>In their own panel, out of your conversation.</p></div>
+    <div class="region h"><b>Hints &amp; shortcuts</b><p>Always just above the composer.</p></div>
+    <div class="region c"><b><span class="p">›</span>Composer</b><p>Never scrolls away.</p></div>
+    <div class="region st"><b>Status line</b><p>Stays on screen, even with notices.</p></div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fullscreen post assets</title>
+<style>
+  :root{--bg:#f4f5f7;--card:#fff;--ink:#1b2440;--muted:#5d6682;--line:#e3e7ef}
+  @media (prefers-color-scheme:dark){:root{--bg:#111216;--card:#1a1c22;--ink:#ece8df;--muted:#8e919c;--line:#2a2d36}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+  main{max-width:1500px;margin:0 auto;padding:32px 16px 64px}
+  h1{font-size:22px;margin:0 0 4px} p.lead{margin:0 0 28px;color:var(--muted)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+  @media (max-width:900px){.row{grid-template-columns:1fr}}
+  .col h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  figure img{display:block;width:100%;height:auto;border-radius:6px}
+  figcaption{font-size:13px;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between;gap:8px}
+  figcaption a{color:inherit}
+  .label{font-weight:600;color:var(--ink);margin:0 0 10px;font-size:16px}
+</style></head>
+<body><main>
+<h1>Codex CLI goes fullscreen: image assets</h1>
+<p class="lead">Left: OpenAI Developer blog style. Right: terminal-native style for use elsewhere. Click any image to open it at full size.</p>
+<div id="rows"></div>
+</main>
+<script>
+const items=[
+  ["Cover","cover","2400×900 blog cover","1200×630 social card (2×)"],
+  ["The fullscreen view","fig1-anatomy","",""],
+  ["Classic vs fullscreen history","fig2-history","",""],
+  ["Copying in fullscreen","fig3-copy","",""],
+];
+const rows=document.getElementById('rows');
+for(const [title,name,na,nb] of items){
+  const sec=document.createElement('section');
+  sec.innerHTML=`<p class="label">${title}</p><div class="row">
+    <div class="col"><h2>OpenAI Developer blog</h2><figure><a href="openai-blog/${name}.png" target="_blank"><img src="openai-blog/${name}.png" alt="${title}, blog style"></a>
+      <figcaption><span>openai-blog/${name}.png</span><span>${na}</span></figcaption></figure></div>
+    <div class="col"><h2>Elsewhere</h2><figure><a href="elsewhere/${name}.png" target="_blank"><img src="elsewhere/${name}.png" alt="${title}, terminal style"></a>
+      <figcaption><span>elsewhere/${name}.png</span><span>${nb}</span></figcaption></figure></div>
+  </div>`;
+  rows.appendChild(sec);
+}
+</script>
+</body></html>

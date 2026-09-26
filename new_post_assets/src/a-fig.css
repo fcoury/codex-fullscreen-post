@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{
+  --ink:#1b2440; --muted:#5d6682; --line:#e3e7ef; --frame:#cfd6e4;
+  --teal:#5fbfae; --teal-bg:#edf9f6;
+  --blue:#8fa9ee; --blue-bg:#f0f4ff;
+  --violet:#b39df2; --violet-bg:#f5f1ff;
+  --amber:#eab85c; --amber-bg:#fff7e8;
+  --coral:#ec6a4d; --coral-bg:#fff1ed;
+  --gray-bg:#f4f6f9;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{width:800px;padding:40px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink)}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
+code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.box{border:1.5px solid var(--line);border-radius:14px;background:#fff}
+.num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
+  background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;flex:none}
