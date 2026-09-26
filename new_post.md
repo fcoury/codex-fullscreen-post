@@ -7,13 +7,13 @@ In *The 22 Immutable Laws of Marketing*, Al Ries and Jack Trout tell the story o
 
 So, in that spirit: **Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you're going to notice.** Most of us on the team did. It took a couple of days for the new muscle memory to set in.
 
-But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. And it gives us room to build things a plain scrolling terminal never could. Here's what changed, why we did it, and what we've done to make the switch easier.
+But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. And it gives us room to build things a plain scrolling terminal never could.
 
 ## What's new
 
 <!-- VISUAL: Hero GIF (~10s). A long session in fullscreen: scroll far back through history, composer stays pinned at the bottom, then jump back to the latest message. -->
 
-Codex CLI 0.157.0 is our largest update since launch. Its centerpiece is a new **fullscreen view**, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
+Codex CLI 0.157.0 is our largest update since launch. Its centerpiece is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
 
 ## Built for long sessions
 
@@ -29,7 +29,7 @@ The classic view wasn't built for that. It lived inside your terminal's scrollba
 
 Fullscreen removes those limits:
 
-- **Sessions open fast, however long they get.** History loads as you scroll to it, not all at once.
+- **Sessions open fast, however long they get.** History loads as you scroll to it.
 - **No scrollback ceiling.** Keep scrolling and Codex keeps loading, all the way back to the start of the session.
 - **Your prompt never scrolls away.** Reread a plan or an earlier diff while the composer stays right where it is, ready for your next message.
 
@@ -44,10 +44,10 @@ You'll also notice some smaller changes:
 
 *Figure 2. The parts of the fullscreen view.*
 
-- **Hints and keyboard shortcuts** get a dedicated area, always just above the composer.
-- **A dedicated status line** stays on screen, even when contextual notices appear.
-- **Warnings** move out of the transcript into their own panel, so your conversation stays about your work.
-- **Diffs and tool output collapse**, so those 400 lines of test results are there only when you want them.
+- Hints and keyboard shortcuts get a dedicated area, always just above the composer.
+- The status line stays on screen, even when contextual notices appear.
+- Warnings move out of the transcript into their own panel, so your conversation stays about your work.
+- Diffs and tool output collapse, so those 400 lines of test results are there only when you want them.
 
 ## The taste you'll notice: copy and paste
 
@@ -79,7 +79,7 @@ A scrolling log can only add lines at the bottom. Once Codex owns the whole scre
 - **A pane for your conversation.** If you've used the side panels in the Codex desktop app, imagine a version built for the terminal: a pane alongside the transcript with information about the current conversation.
 - **Visualizations built for the terminal.** Richer ways to see what your agents are doing, designed for the TUI instead of squeezed into a log.
 
-None of these could work in the classic view. We'll share more as they land.
+We'll share more as they land.
 
 ## Give it a fair try
 
@@ -91,6 +91,6 @@ If it still isn't for you, the classic scrollback view is one command away:
 2. Choose **Scrollback**.
 3. Restart Codex.
 
-Your choice is saved for future launches. To come back to fullscreen, run `/tui`, choose **Fullscreen**, and restart. If you manage your config by hand, the same switch is `fullscreen_transcript = false` under `[tui]`.
+Codex remembers your choice for future launches. To come back to fullscreen, run `/tui`, choose **Fullscreen**, and restart. If you manage your config by hand, the same switch is `fullscreen_transcript = false` under `[tui]`.
 
-Either way, tell us how it goes. Run `/feedback` and let us know what would make fullscreen work for you.
+Whichever view you land on, tell us how it goes. Run `/feedback` and let us know what would make fullscreen work for you.
