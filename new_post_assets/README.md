@@ -30,6 +30,11 @@ come directly from Chromium, so cwebp is not required. Light and dark versions
 use a-fig.css variables and the same source markup. The b-* figure HTML files
 are generated gallery views; edit a-* instead.
 
+The two article figures keep a dark, low-glare palette in both themes.
+build_figures.mjs extracts fullscreen-source.png at 1.75s, during the hero
+GIF's first slow PageUps. fig1 overlays its labels on that actual frame;
+rebuilding after a new recording refreshes the source image too.
+
 `npm run verify` checks that the article renders without any network requests,
 loads all lazy images as a reader scrolls, has meaningful alt text, three
 inline GIFs (and static stills for reduced motion), working section links, no

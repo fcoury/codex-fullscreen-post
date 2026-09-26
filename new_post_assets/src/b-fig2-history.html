@@ -1,20 +1,69 @@
-<!doctype html><html data-theme="dark" lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="a-fig.css">
+<!doctype html><html data-theme="dark" lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="a-fig.css">
 <style>
-.columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:22px}
-h2{font-size:21px;letter-spacing:-.02em;margin:0 0 7px}p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
-.screen{border:1px solid var(--frame);border-radius:8px;margin-top:20px;padding:15px;background:var(--card);height:208px;position:relative}
-.lost,.load{padding:9px 10px;border:1px dashed var(--line);color:var(--muted);border-radius:5px;font-size:15px}
-.lines{padding:13px 0;display:grid;gap:8px}.lines i{display:block;background:var(--line);height:5px;border-radius:2px}.lines i:nth-child(2n){width:65%}
-.prompt{position:absolute;bottom:12px;left:12px;right:12px;border:1px solid var(--frame);border-radius:5px;padding:8px 11px;font-size:15px}
-.focus .load,.focus .prompt{background:var(--blue-bg);border-color:var(--blue);color:var(--ink)}
-.note{border-top:1px solid var(--line);margin-top:18px;padding-top:12px}
-</style></head><body>
-<div class="eyebrow">Where history lives</div>
-<div class="columns">
-<section><h2>Classic scrollback</h2><p>Owned by the terminal</p>
-<div class="screen"><div class="lost">Earlier messages can fall past the limit</div><div class="lines"><i></i><i></i><i></i><i></i><i></i></div><div class="prompt">› Prompt scrolls with history</div></div>
-<p class="note">Loads as much as possible up front. The terminal decides how much it keeps.</p></section>
-<section class="focus"><h2>Fullscreen</h2><p>Owned by Codex</p>
-<div class="screen"><div class="load">↑ Loads history when you scroll to it</div><div class="lines"><i></i><i></i><i></i><i></i><i></i></div><div class="prompt">› Composer stays on screen</div></div>
-<p class="note">Earlier messages load on demand. The composer remains ready for your next prompt.</p></section>
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:42px;margin-top:22px}
+.side h2{font-size:19px;line-height:1.2;letter-spacing:-.015em;font-weight:550;margin:0 0 5px}
+.side .owner{font:13px/20px ui-monospace,Menlo,monospace;color:var(--muted)}
+.side .owner span{color:var(--old)}.side.new .owner span{color:var(--live)}
+.visual{display:block;width:100%;height:324px;margin-top:14px}
+.visual text{font-family:ui-sans-serif,-apple-system,system-ui,sans-serif;fill:var(--ink)}
+.visual .quiet{fill:var(--muted);font-size:14px}
+.visual .accent{fill:var(--live)}.visual .limit{fill:var(--old)}
+.visual .turn{font:14px ui-monospace,Menlo,monospace}
+.summary{padding-top:12px;margin:10px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:16px;line-height:1.45}
+.summary strong{color:var(--ink);font-weight:540}
+</style></head><body class="editorial">
+<div class="eyebrow">01 / Two ways to keep a conversation</div>
+<h1>Where history lives</h1>
+<p class="intro">The difference shows up when you scroll back through a long session.</p>
+<div class="compare">
+<section class="side">
+  <h2>Classic scrollback</h2>
+  <div class="owner">Held by the <span>terminal</span></div>
+  <svg class="visual" viewBox="0 0 347 324" aria-label="A finite terminal buffer. Older rows fade beyond its limit; the prompt has scrolled out of the view.">
+    <defs>
+      <linearGradient id="lost" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#202123" stop-opacity="0"/><stop offset="100%" stop-color="#282727"/>
+      </linearGradient>
+    </defs>
+    <rect x="10" y="2" width="327" height="64" fill="url(#lost)" rx="4"/>
+    <path d="M32 15h147 M32 34h221 M32 53h160" stroke="#d5ab84" stroke-opacity=".20" stroke-width="2"/>
+    <path d="M9 76h329" stroke="#d5ab84" stroke-dasharray="4 5"/>
+    <text x="12" y="97" class="quiet limit">↑ Past the limit: messages can be lost</text>
+    <rect x="1" y="115" width="345" height="148" fill="#101112" stroke="#555658" rx="6"/>
+    <path d="M1 145h345" stroke="#393b3d"/>
+    <circle cx="16" cy="131" r="3" fill="#d5ab84"/><circle cx="28" cy="131" r="3" fill="#67645e"/><circle cx="40" cy="131" r="3" fill="#67645e"/>
+    <text x="330" y="135" text-anchor="end" class="quiet">visible window</text>
+    <path d="M13 163v22 M13 196v22 M13 229v22" stroke="#65635e" stroke-width="2"/>
+    <text x="25" y="179" class="turn">› Read src/refill.rs</text>
+    <text x="25" y="212" class="turn">• Edited src/refill.rs</text>
+    <text x="25" y="245" class="turn">• Ran cargo test</text>
+    <path d="M176 264v18m-4-5 4 5 4-5" fill="none" stroke="#d5ab84"/>
+    <rect x="10" y="287" width="327" height="32" fill="none" stroke="#56504b" stroke-dasharray="4 5" rx="4"/>
+    <text x="22" y="308" class="quiet">› Prompt may scroll out of view</text>
+  </svg>
+  <p class="summary"><strong>Loads up front.</strong> Earlier messages can fall outside what the terminal keeps.</p>
+</section>
+<section class="side new">
+  <h2>Fullscreen</h2>
+  <div class="owner">Held by <span>Codex</span></div>
+  <svg class="visual" viewBox="0 0 347 324" aria-label="Earlier turns remain available in the Codex session. The visible window loads on demand and the composer is pinned.">
+    <rect x="10" y="2" width="327" height="64" fill="#1a2925" stroke="#445e55" rx="4"/>
+    <path d="M25 16h3m5 0h194 M25 34h3m5 0h240 M25 52h3m5 0h165" stroke="#93d4c0" stroke-opacity=".50" stroke-width="2"/>
+    <path d="M176 67v12m-4-5 4 5 4-5" fill="none" stroke="#93d4c0"/>
+    <text x="12" y="97" class="quiet accent">Earlier history is still available</text>
+    <rect x="1" y="115" width="345" height="204" fill="#101112" stroke="#689889" rx="6"/>
+    <path d="M1 145h345" stroke="#393b3d"/>
+    <circle cx="16" cy="131" r="3" fill="#93d4c0"/><circle cx="28" cy="131" r="3" fill="#586661"/><circle cx="40" cy="131" r="3" fill="#586661"/>
+    <text x="330" y="135" text-anchor="end" class="quiet">visible window</text>
+    <path d="M13 163v22 M13 196v22 M13 229v22" stroke="#93d4c0" stroke-width="2"/>
+    <text x="25" y="179" class="turn">› Read src/refill.rs</text>
+    <text x="25" y="212" class="turn">• Edited src/refill.rs</text>
+    <text x="25" y="245" class="turn">• Ran cargo test</text>
+    <rect x="10" y="270" width="327" height="39" rx="4" fill="#1b2824" stroke="#557d70"/>
+    <text x="22" y="294" class="turn accent">› Composer stays here</text>
+    <path d="M316 283v12m-5-6h10" stroke="#93d4c0" stroke-width="1.5"/>
+  </svg>
+  <p class="summary"><strong>Loads what you reach.</strong> Older history is available and the composer stays put.</p>
+</section>
 </div></body></html>

@@ -37,15 +37,15 @@ When we first built Codex, managing context often meant starting fresh. Compacti
 
 The classic view lived inside that scrollback. We couldn't know when you would scroll back, so we loaded as much conversation as we could up front. The longer the session, the more we loaded, and older history could still fall off the top.
 
-![Classic scrollback loads history up front and can drop earlier messages. Fullscreen loads older history as you scroll to it and keeps the composer visible.](new_post_assets/openai-blog/fig2-history.webp)
+![Two history tapes: terminal scrollback drops the oldest turns past its limit and the prompt can leave view; Codex keeps earlier turns available, loads the visible ones as needed and pins the composer.](new_post_assets/openai-blog/fig2-history.webp)
 
 *Figure 1. History belongs to the terminal in classic view and to Codex in fullscreen.*
 
 Fullscreen loads history as you reach it, so opening a long session no longer means drawing the whole transcript into scrollback. It can also redraw just the parts of streaming output that changed. That helps with growing tables and lists, especially on slower terminals or high-latency connections.
 
-![The fullscreen layout: transcript, notices, composer, status, then shortcuts.](new_post_assets/openai-blog/fig1-anatomy.webp)
+![A real Codex screen after scrolling: 1 marks the transcript and collapsed tool output, 2 the Back to bottom notice, 3 the pinned composer, and 4 the status and shortcuts.](new_post_assets/openai-blog/fig1-anatomy.webp)
 
-*Figure 2. Notices appear above the composer. Status and shortcuts have their own rows.*
+*Figure 2. A frame from the recorded example session. The numbered areas show how the transcript and pinned controls share the screen.*
 
 The status line stays on screen when notices appear. Hints and shortcuts move to their own row at the bottom. Warnings show as a count there; <kbd>F2</kbd> opens them. Diffs and tool output can collapse, keeping long test runs available without filling the conversation.
 

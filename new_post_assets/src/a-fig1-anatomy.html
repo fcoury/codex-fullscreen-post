@@ -1,45 +1,40 @@
-<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="a-fig.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="a-fig.css">
 <style>
-  .term{border:2px solid var(--frame);border-radius:8px;overflow:hidden;background:var(--paper)}
-  .bar{height:42px;border-bottom:1.5px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 18px}
-  .bar i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--frame)}
-  .bar span{margin-left:auto;font-size:14px;color:var(--muted)}
-  .inner{padding:16px;display:flex;flex-direction:column;gap:12px}
-  .region{position:relative;border-radius:6px;border:1.5px solid;padding:14px 18px;display:flex;align-items:baseline;gap:16px}
-  .region b{font-size:17px;font-weight:600;flex:none;width:168px}
-  .region p{margin:0;font-size:15.5px;line-height:1.45;color:var(--muted)}
-  .t{background:var(--blue-bg);border-color:var(--blue);display:block;padding-right:34px}
-  .t .row{display:flex;align-items:baseline;gap:16px}
-  .ln{height:8px;border-radius:4px;background:var(--line);margin-top:12px}
-  .collapsed{margin-top:16px;border:1.5px dashed var(--teal);background:var(--teal-bg);border-radius:9px;padding:10px 14px;
-    display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink);font-family:ui-monospace,Menlo,monospace}
-  .collapsed span{margin-left:auto;font-family:inherit;color:var(--muted);font-size:14px}
-  .collapsed em{font-style:normal;opacity:.75}
-  .scroll{position:absolute;right:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:var(--gray-bg)}
-  .scroll:after{content:"";position:absolute;left:0;right:0;top:0;height:38px;border-radius:3px;background:var(--blue)}
-  .n{background:var(--teal-bg);border-color:var(--teal)}
-  .chip{margin-left:auto;flex:none;font-family:ui-monospace,Menlo,monospace;font-size:13px;border:1.5px solid var(--amber);
-    background:var(--amber-bg);color:var(--ink);border-radius:999px;padding:3px 11px}
-  .h{background:var(--violet-bg);border-color:var(--violet)}
-  .c{background:var(--coral-bg);border-color:var(--coral);border-width:2px}
-  .c b .p{font-family:ui-monospace,Menlo,monospace;color:var(--coral);margin-right:8px}
-  .st{background:var(--gray-bg);border-color:var(--line)}
-</style></head><body>
-<div class="eyebrow" style="margin-bottom:22px">The fullscreen view</div>
-<div class="term">
-  <div class="bar"><i></i><i></i><i></i><span>codex</span></div>
-  <div class="inner">
-    <div class="region t">
-      <div class="row"><b>Transcript</b><p>No scrollback limit. History loads as you scroll to it.</p></div>
-      <div class="ln" style="width:58%"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:44%"></div>
-      <div class="collapsed">• Ran cargo test <em>+ Show details</em><span>collapsed until you need it</span></div>
-      <div class="ln" style="width:66%;margin-top:16px"></div><div class="ln" style="width:50%"></div>
-      <div class="scroll"></div>
-    </div>
-    <div class="region n"><b>Notices</b><p>Copy confirmations and “Back to bottom”, just above the composer.</p></div>
-    <div class="region c"><b><span class="p">›</span>Composer</b><p>Never scrolls away.</p></div>
-    <div class="region st"><b>Status line</b><p>Stays on screen, even with notices.</p></div>
-    <div class="region h"><b>Hints &amp; shortcuts</b><p>The bottom row. Warnings wait here as a count.</p><span class="chip">⚠ 1 warning · f2</span></div>
-  </div>
+.stage{position:relative;margin-top:18px;width:736px;height:547px;overflow:hidden;
+  border-radius:7px;outline:1px solid #484949;background:#0e0e10}
+.stage img{position:absolute;width:100%;height:100%;inset:0;display:block}
+.stage svg{position:absolute;inset:0;width:100%;height:100%}
+.boundary{fill:none;stroke:#93d4c0;stroke-width:2;stroke-opacity:.72}
+.soft{fill:#93d4c0;fill-opacity:.07;stroke:#93d4c0;stroke-width:2}
+.pin circle{fill:#93d4c0;stroke:#0e0e10;stroke-width:3}
+.pin text{fill:#111b17;font:600 20px ui-sans-serif,-apple-system,system-ui;text-anchor:middle;dominant-baseline:central}
+.key{display:grid;grid-template-columns:1fr 1fr;gap:11px 32px;margin-top:20px}
+.item{display:flex;align-items:flex-start;gap:12px;border-top:1px solid var(--line);padding-top:9px}
+.item .id{color:var(--live);font:15px/22px ui-monospace,Menlo,monospace;flex:none}
+.item p{margin:0;color:var(--muted);font-size:15px;line-height:1.3}
+.item strong{font-size:16px;color:var(--ink);font-weight:560}
+</style></head><body class="editorial">
+<div class="eyebrow">02 / Inside Codex</div>
+<h1>The fullscreen view</h1>
+<p class="intro">Scroll the conversation. Your controls stay where you left them.</p>
+<div class="stage">
+  <img src="../openai-blog/fullscreen-source.png" alt="Codex after one PageUp; captured from the recorded example session.">
+  <svg viewBox="0 0 1200 892" aria-hidden="true">
+    <rect class="boundary" x="10" y="37" width="1179" height="693" rx="6"/>
+    <rect class="soft" x="10" y="731" width="1179" height="23" rx="3"/>
+    <rect class="boundary" x="10" y="755" width="1179" height="69" rx="4"/>
+    <rect class="soft" x="10" y="826" width="1179" height="53" rx="4"/>
+    <g class="pin"><circle cx="1151" cy="79" r="21"/><text x="1151" y="79">1</text></g>
+    <g class="pin"><circle cx="995" cy="742" r="19"/><text x="995" y="742">2</text></g>
+    <g class="pin"><circle cx="1151" cy="789" r="21"/><text x="1151" y="789">3</text></g>
+    <g class="pin"><circle cx="1084" cy="849" r="21"/><text x="1084" y="849">4</text></g>
+  </svg>
+</div>
+<div class="key">
+  <div class="item"><span class="id">01</span><p><strong>Transcript</strong><br>History and collapsible tool output.</p></div>
+  <div class="item"><span class="id">02</span><p><strong>Notices</strong><br>“Back to bottom” or copy confirmations.</p></div>
+  <div class="item"><span class="id">03</span><p><strong>Composer</strong><br>Your next prompt stays on screen.</p></div>
+  <div class="item"><span class="id">04</span><p><strong>Status &amp; shortcuts</strong><br>Separate rows, even with a notice.</p></div>
 </div>
 </body></html>

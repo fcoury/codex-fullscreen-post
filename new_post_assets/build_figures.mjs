@@ -1,9 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath, pathToFileURL} from "node:url";
+import {execFileSync} from "node:child_process";
 import {launchBrowser} from "./browser.mjs";
 
 const root=path.dirname(fileURLToPath(import.meta.url));
+// The first slow PageUp in the recorded CLI: the real "Back to bottom" notice,
+// composer, status and shortcuts are all on screen. No redraw of the TUI.
+execFileSync("ffmpeg",["-v","error","-y","-ss","1.75","-i",
+  path.join(root,"openai-blog/hero.gif"),"-frames:v","1",
+  path.join(root,"openai-blog/fullscreen-source.png")]);
 const browser=await launchBrowser();
 try {
   const page=await browser.newPage();
@@ -13,6 +19,7 @@ try {
     await page.evaluate(async t => {
       if(t)document.documentElement.dataset.theme=t;
       await document.fonts.ready;
+      await Promise.all([...document.images].map(img=>img.decode()));
     },theme);
     const bounds=await page.evaluate(() => ({scroll:document.body.scrollHeight,height:innerHeight}));
     if(bounds.scroll>height+2)throw Error(`${src} clips ${bounds.scroll-height}px`);
@@ -22,7 +29,7 @@ try {
   const webp=async png=>{
     await page.screenshot({type:"webp",quality:92,path:path.join(root,png.replace(/\.png$/,".webp"))});
   };
-  for (const [name,height] of [["fig1-anatomy",690],["fig2-history",512],["fig3-copy",780]]) {
+  for (const [name,height] of [["fig1-anatomy",864],["fig2-history",624],["fig3-copy",780]]) {
     for (const theme of ["light","dark"]) {
       const dest=theme==="light" ? "openai-blog" : "elsewhere";
       const out=`${dest}/${name}.png`;

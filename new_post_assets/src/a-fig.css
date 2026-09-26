@@ -18,3 +18,16 @@ code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .box{border:1px solid var(--frame);border-radius:8px;background:var(--card)}
 .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;flex:none}
 .term,.region,.tip,.card,.box{background:var(--card)}
+
+/* Figures in the article share the recorded terminal's low-glare palette.
+   The paper gallery stays independent of the light/dark article theme. */
+html:has(body.editorial){background:#18191b}
+body.editorial{
+ --ink:#e9e6df;--muted:#a8a69f;--line:#393b3d;--frame:#535555;
+ --paper:#18191b;--card:#202123;--live:#93d4c0;--old:#d5ab84;
+ background:radial-gradient(ellipse at 98% 0%,#242e2b 0%,transparent 43%),#18191b;
+ color:var(--ink);padding:28px 32px;font-variant-numeric:tabular-nums;
+}
+.editorial .eyebrow{font-size:13px;letter-spacing:.08em;color:var(--live)}
+.editorial h1{font-size:26px;line-height:1.15;font-weight:540;letter-spacing:-.028em;margin:6px 0 8px}
+.editorial .intro{font-size:16px;color:var(--muted);margin:0;line-height:1.45}
