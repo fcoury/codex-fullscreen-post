@@ -30,26 +30,73 @@ Keep `new_post.md`, `new_post_preview.html` and `new_post_assets/` in the same f
   - `./render.sh src/a-cover.html openai-blog/cover.png 2400 900 1`
   - `./render.sh src/b-cover.html elsewhere/cover.png 1200 630 2`
   - then `cwebp -q 90 openai-blog/cover.png -o openai-blog/cover.webp`
-- `/side` mockup: `./render.sh src/side-preview.html openai-blog/side-preview.png 1200 870 1`, then `cwebp`
+- `/side` mockup:
+  - `./render.sh src/side-preview.html openai-blog/side-preview.png 1200 870 1`
+  - then `cwebp -q 90 openai-blog/side-preview.png -o openai-blog/side-preview.webp`
 - Preview: `python3 new_post_assets/build_preview.py`
 
 ## Recording the GIFs
 
-Requirements: `brew install vhs gifsicle` (VHS brings ttyd and ffmpeg), the JetBrains Mono font, Node, and `npm install` in `gifs/`.
+macOS only: the copy recorder uses `pbcopy`, `pbpaste` and `osascript`, and Chrome at `/Applications/Google Chrome.app`.
+
+**One-time setup:**
+
+```
+brew install vhs gifsicle webp                # VHS brings ttyd and ffmpeg
+brew install --cask font-jetbrains-mono
+cd new_post_assets/gifs && npm install        # puppeteer-core for the copy recorder
+```
+
+**Record.** Run from `new_post_assets/gifs`. `CODEX_BIN` is the Codex build that gets recorded. Run `setup_demo.sh` again before each recording so every take starts from a clean demo home.
 
 ```
 cd new_post_assets/gifs
-export DEMO_ROOT=$(./setup_demo.sh "$TMPDIR/codex-gif-demo") CODEX_BIN=$(command -v codex)
-vhs hero.tape              # out/hero.gif
-node record_copy.mjs       # out/copy.gif (VHS can't drag the mouse, so this drives ttyd + headless Chrome)
-gifsicle -O3 --lossy=40 --colors 128 out/hero.gif -o ../openai-blog/hero.gif   # same for copy.gif
+export CODEX_BIN=$(command -v codex)          # check: $CODEX_BIN --version
+
+export DEMO_ROOT=$(./setup_demo.sh "$TMPDIR/codex-gif-demo")
+vhs hero.tape                                  # -> out/hero.gif
+
+export DEMO_ROOT=$(./setup_demo.sh "$TMPDIR/codex-gif-demo")
+node record_copy.mjs                           # -> out/copy.gif
 ```
 
+**Check the result** before replacing anything. These write one image per GIF with a frame every second or so:
+
+```
+ffmpeg -loglevel error -y -i out/hero.gif -vf "fps=1.2,scale=600:-1,tile=3x4" -frames:v 1 out/hero-sheet.png
+ffmpeg -loglevel error -y -i out/copy.gif -vf "fps=1.1,scale=600:-1,tile=3x4" -frames:v 1 out/copy-sheet.png
+open out/hero-sheet.png out/copy-sheet.png
+```
+
+Look for:
+- the composer, status line and hints row visible at the bottom of every frame;
+- the hero reaching the first message ("Read through this crate…") before jumping back;
+- "Copied … chars to host clipboard" above the composer in the copy GIF, and the pasted paragraph and code block in the notes window.
+
+**Publish.** Compress into `openai-blog/`, and export MP4s in case the CMS prefers video:
+
+```
+gifsicle -O3 --lossy=40 --colors 128 out/hero.gif -o ../openai-blog/hero.gif
+gifsicle -O3 --lossy=40 --colors 128 out/copy.gif -o ../openai-blog/copy.gif
+for g in hero copy; do
+  ffmpeg -loglevel error -y -i out/$g.gif -movflags +faststart -pix_fmt yuv420p \
+    -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -crf 22 ../openai-blog/$g.mp4
+done
+```
+
+Then rebuild the preview with `python3 ../build_preview.py`. `out/` is gitignored; only the files in `openai-blog/` are committed. At the last recording, `hero.gif` was 3 MB and `hero.mp4` 1.5 MB.
+
+**What the recordings show, and why:**
+- The Codex version is visible: the hero GIF's session header shows `CODEX_BIN`'s version for about 2 seconds at the top of the scroll. The current GIFs were recorded on codex-cli 0.159.0-alpha.6.
+- Both GIFs resume a saved session, so the header is the boxed card ("model: / directory:"). The compact banner with a greeting and the blossom only appear on a new session (`app/session_lifecycle.rs`, `app/startup.rs` in openai/codex), and no setting changes that.
+- The status line is Codex's default ("GPT-6-Sol default · ~/tidepool"). Status line settings from your own `~/.codex/config.toml` aren't used.
+
+**How it works:**
 - `setup_demo.sh` builds an isolated Codex home with a synthetic 42-turn session about a made-up crate (`make_demo_session.py`). Nothing from `~/.codex` is used. The config points at a dead local provider, so Codex needs no sign-in and never calls a model.
-- `demo-codex.sh` starts Codex from a clean environment so the host terminal (tmux, Ghostty) doesn't change terminal detection. With no known terminal, `copy_on_select = "auto"` copies on select, like Terminal.app and iTerm2.
-- `record_copy.mjs` writes to the real macOS clipboard, then restores the previous plain-text clipboard when it exits. It saves what Codex copied to `out/copy-clipboard.{html,txt}`, and the "paste" in the GIF is that real HTML.
-- `common.tape` holds the shared look (about 120×35, JetBrains Mono 16, dark theme); the copy recorder reads it too.
-- MP4 versions (`hero.mp4`, `copy.mp4`) are in `openai-blog/` in case the CMS prefers video. `hero.gif` is 3 MB; the MP4 is 1.5 MB.
+- `demo-codex.sh` starts Codex with `--no-daemon` from a clean environment, so the host terminal (tmux, Ghostty) doesn't change terminal detection. With no known terminal, `copy_on_select = "auto"` copies on select, like Terminal.app and iTerm2.
+- `record_copy.mjs` exists because VHS can't drag the mouse. It runs Codex in ttyd, drives headless Chrome with puppeteer-core, and assembles the screenshots with ffmpeg. It writes to the real macOS clipboard, then restores the previous plain-text clipboard when it exits, even on failure. It saves what Codex copied to `out/copy-clipboard.{html,txt}`, and the "paste" in the GIF is that real HTML.
+- The copy GIF selects the sentence above the code block too, because Codex copies a code-only selection as plain text and adds HTML only when prose is included.
+- `common.tape` holds the shared look (about 120×35, JetBrains Mono 16, line height 1.1, dark theme). The copy recorder reads the same settings, so edit them there.
 
 ## Image specs
 
