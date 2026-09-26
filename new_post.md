@@ -1,100 +1,68 @@
 # Codex CLI goes fullscreen
 
-<!-- COVER: set as the post's cover image in the CMS if it has a separate field; otherwise keep it here. -->
-![A glass-style terminal window framed by fullscreen corner marks, with pages of earlier history stacked above it and the composer pinned at the bottom.](new_post_assets/openai-blog/cover.webp)
+In *The 22 Immutable Laws of Marketing*, Al Ries and Jack Trout describe an ad for Listerine built around a candid admission about its taste. The idea stuck with us while working on this update.
 
-In *The 22 Immutable Laws of Marketing*, Al Ries and Jack Trout tell the story of a Listerine ad with an unlikely tagline: *"The taste you hate, twice a day."* It's their example of the Law of Candor. Admit a negative, and people will give you a positive. The ad worked because it said out loud what everyone already knew, and turned it into proof: if it tastes that strong, it must be doing something.
+Fullscreen changes how selecting and copying text works in Codex CLI. Most of us on the team noticed the difference, and it took a couple of days for the new habit to settle in. Here's what changes, why we made it, and how to switch back if it doesn't work for you.
 
-So, in that spirit: **Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you're going to notice.** Most of us on the team did. It took a couple of days for the new muscle memory to set in.
+## What changes
 
-But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also gives us a foundation to build new features that a plain scrolling terminal never could.
+Codex CLI 0.157.0 introduced a fullscreen view. Codex draws the transcript, composer and status line itself, in the same way that `vim`, `top` or `lazygit` own their terminal windows.
 
-## What's new
+<!-- MEDIA: hero -->
 
-![A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message.](new_post_assets/openai-blog/hero.gif)
+When you scroll back, Codex loads earlier history as you reach it. The composer stays on screen, ready for your next message. Older messages no longer fall off the top because your terminal reached its scrollback limit.
 
-Codex CLI 0.157.0 is our largest update since launch. Its centerpiece is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
+## Selecting and copying
 
-## Built for long sessions
+Codex handles selection in fullscreen. On terminals that forward the usual copy key to the app, select text and use that shortcut. In other terminals, Codex copies as soon as you finish selecting.
 
-When we first built Codex, managing context was a big part of working with the model. You'd often start fresh just to keep a session from getting polluted.
+<!-- MEDIA: copy -->
 
-That's changed. Models have gotten really good at managing context, compaction is now rock solid, and with memory in the mix, long sessions no longer need babysitting. Codex has grown from short, focused exchanges into agents that run for long stretches.
+| Default behavior | Where |
+| --- | --- |
+| Use your usual copy shortcut | Ghostty 1.2+ when its version is detected, kitty on macOS, Windows Terminal (including WSL), and VS Code on Windows |
+| Copies when you finish selecting | Terminal.app, iTerm2, other terminals and anything inside tmux or Zellij |
 
-The classic view wasn't built for that. It lived inside your terminal's scrollback, so it was bound by limits that vary from terminal to terminal. And because we never knew if or when you'd scroll back, we had to load as much of the conversation as we could up front. The longer the session, the more we loaded, and older history still fell off the top.
+These are Codex's defaults for a directly detected terminal. Terminal versions, custom keybindings and remote sessions can affect what keys reach the app. If you prefer to choose, set `copy_on_select` under `[tui]` to `"auto"`, `"always"` or `"never"`.
 
-![Side-by-side comparison. Classic scrollback: the oldest messages are dropped past the terminal's scrollback limit, everything else is loaded up front, and the prompt scrolls with the history. Fullscreen: history above and below the screen loads on demand, only what you need is loaded, and the composer stays pinned to the screen while you scroll.](new_post_assets/openai-blog/fig2-history.webp)
+When the selection includes prose, Codex offers Markdown and formatted text to the clipboard. A code-only selection copies as plain text. If you need the terminal's own selection, use your terminal's selection override; the modifier varies between terminals.
 
-*Figure 1. The classic view loads the whole conversation up front and loses whatever falls past the scrollback limit. Fullscreen loads history as you scroll to it and keeps the composer in place.*
+## Why long sessions needed this
 
-Fullscreen removes those limits:
+When we first built Codex, managing context often meant starting fresh. Compaction and memory now make it easier to keep working in the same conversation, so the limits of terminal scrollback show up more often.
 
-- **Sessions open fast, however long they get.** History loads as you scroll to it.
-- **No scrollback ceiling.** Keep scrolling and Codex keeps loading, all the way back to the start of the session.
-- **Your prompt never scrolls away.** Reread a plan or an earlier diff while the composer stays right where it is, ready for your next message.
+The classic view lived inside that scrollback. We couldn't know when you would scroll back, so we loaded as much conversation as we could up front. The longer the session, the more we loaded, and older history could still fall off the top.
 
-A few more things get better along the way:
+![Classic scrollback loads history up front and can drop earlier messages. Fullscreen loads older history as you scroll to it and keeps the composer visible.](new_post_assets/openai-blog/fig2-history.webp)
 
-- **Streaming output looks right.** The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, but you could on slow terminals and high-latency SSH connections. Fullscreen redraws exactly what changed.
-- **One way of working, everywhere.** Parts of Codex, like the command center and the transcript, were already fullscreen. Now everything scrolls, selects and navigates the same way.
+*Figure 1. History belongs to the terminal in classic view and to Codex in fullscreen.*
 
-You'll also notice some smaller changes:
+Fullscreen loads history as you reach it, so opening a long session no longer means drawing the whole transcript into scrollback. It can also redraw just the parts of streaming output that changed. That helps with growing tables and lists, especially on slower terminals or high-latency connections.
 
-![Diagram of the fullscreen view, top to bottom: the transcript, with no scrollback limit and a collapsed test run; a notices row for copy confirmations and "Back to bottom"; the composer, which never scrolls away; the status line, which stays on screen; and the hints and shortcuts row at the bottom, where a warning count waits.](new_post_assets/openai-blog/fig1-anatomy.webp)
+![The fullscreen layout: transcript, notices, composer, status, then shortcuts.](new_post_assets/openai-blog/fig1-anatomy.webp)
 
-*Figure 2. The parts of the fullscreen view.*
+*Figure 2. Notices appear above the composer. Status and shortcuts have their own rows.*
 
-- **Hints and keyboard shortcuts** get their own row at the bottom of the screen.
-- **The status line** stays on screen, even when contextual notices appear.
-- **Warnings** move out of the transcript. A count waits in the bottom row, and <kbd>F2</kbd> opens them, so your conversation stays about your work.
-- **Diffs and tool output collapse**, so those 400 lines of test results are there only when you want them.
+The status line stays on screen when notices appear. Hints and shortcuts move to their own row at the bottom. Warnings show as a count there; <kbd>F2</kbd> opens them. Diffs and tool output can collapse, keeping long test runs available without filling the conversation.
 
-## The taste you'll notice: copy and paste
+## What we're building next
 
-In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.
+Once Codex owns the screen, it can put information beside the conversation and update each area in place. One experiment is `/side`: a second conversation alongside the first.
 
-![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer, and pasting into a notes app keeps the paragraph, the inline code and the code block.](new_post_assets/openai-blog/copy.gif)
+<!-- MEDIA: side -->
 
-**In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working.** Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex now copies the moment you finish selecting, so you don't need a shortcut. This is already live.
+On wide terminals, the work in progress can remain visible while you ask a separate question. The preview gives each conversation its own composer; click a pane or use <kbd>Ctrl</kbd>+<kbd>/</kbd> to switch focus. Narrow terminals fall back to a single conversation. This is still in development.
 
-![Two groups of terminals. Your copy shortcut keeps working in Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows. Codex copies as soon as you select in Terminal.app, iTerm2, Warp, WezTerm, Alacritty, GNOME Terminal, Konsole, kitty on Linux, VS Code on macOS and Linux, and anything inside tmux or Zellij.](new_post_assets/openai-blog/fig3-copy.webp)
+We're also exploring a conversation information pane and ways to show agent activity in the terminal. We'll share more when those are ready.
 
-*Figure 3. How copying works in each terminal, and how to change it.*
+## Give it a try
 
-If you'd rather choose for yourself, set `copy_on_select` in the `[tui]` section of your config to `auto` (the default), `always` or `never`.
-
-Either way, what you copy now pastes back cleanly. Codex puts both Markdown and formatted text on your clipboard, so you get the right one depending on where you paste. And if you ever need your terminal's own selection, hold <kbd>Shift</kbd>, <kbd>Fn</kbd> or <kbd>Alt</kbd>/<kbd>Opt</kbd> while you drag.
-
-We're still smoothing out rough edges, so keep the reports coming. `/feedback` is the fastest way to reach us.
-
-## Where this is going
-
-Long sessions are the benefit you get today. The bigger reason we made this change is what comes next.
-
-A scrolling log can only add lines at the bottom. Once Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we're building on top of it:
-
-![Mockup of a side-by-side /side conversation, labeled "Preview · Mockup". The main conversation keeps working on the left while a side conversation answers a quick question on the right, above a shared composer.](new_post_assets/openai-blog/side-preview.webp)
-
-*An early mockup of side-by-side `/side`. It isn't in 0.157.0 yet.*
-
-- **`/side`, actually side by side.** Ask a quick question in a second conversation shown next to your main one, without derailing the task in progress.
-- **A pane for your conversation.** If you've used the side panels in the Codex desktop app, imagine a version built for the terminal: a pane alongside the transcript with information about the current conversation.
-- **Visualizations built for the terminal.** Richer ways to see what your agents are doing, designed for the TUI instead of squeezed into a log.
-
-None of these could work in the classic view. We'll share more as they land.
-
-## Give it a fair try
-
-We know we're asking for something. Fullscreen changes habits you've built over years, and the first day can feel off. So we'd like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and with copy-on-select now live, the biggest adjustment is already much smaller.
-
-If it still isn't for you, the classic scrollback view is one command away:
+Give fullscreen a few days if you can. If the change still doesn't suit how you work, the classic scrollback view is one command away:
 
 1. Run `/tui`.
 2. Choose **Scrollback**.
 3. Restart Codex.
 
-Codex remembers your choice for future launches. To come back to fullscreen, run `/tui`, choose **Fullscreen**, and restart. If you manage your config by hand, the same switch is `fullscreen_transcript = false` under `[tui]`.
+Codex remembers your choice. To return, run `/tui`, choose **Fullscreen**, and restart. The equivalent config setting is `fullscreen_transcript = false` under `[tui]`.
 
-Whichever view you land on, tell us how it goes. Run `/feedback` and let us know what would make fullscreen work for you.
-
-The taste you'll notice, for a few days. The rest, we think you'll keep.
+Run `/feedback` and let us know what would make fullscreen work for you.

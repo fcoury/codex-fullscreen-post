@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 :root{
-  --ink:#1b2440; --muted:#5d6682; --line:#e3e7ef; --frame:#cfd6e4;
-  --teal:#5fbfae; --teal-bg:#edf9f6;
-  --blue:#8fa9ee; --blue-bg:#f0f4ff;
-  --violet:#b39df2; --violet-bg:#f5f1ff;
-  --amber:#eab85c; --amber-bg:#fff7e8;
-  --coral:#ec6a4d; --coral-bg:#fff1ed;
-  --gray-bg:#f4f6f9;
+ --ink:#232521;--muted:#66685e;--line:#d5d5ca;--frame:#52564b;--paper:#f9f9f2;--card:#fffefb;
+ --blue:#577ab5;--blue-bg:#e3edff;--teal:#577ab5;--teal-bg:#e3edff;
+ --violet:var(--line);--violet-bg:var(--card);--amber:#78641c;--amber-bg:#faf2d4;
+ --coral:var(--frame);--coral-bg:var(--card);--gray-bg:#f1f1ea;
+}
+:root[data-theme=dark]{
+ --ink:#e9e8e2;--muted:#b5b5aa;--line:#3c3e38;--frame:#a4a599;--paper:#131410;--card:#1c1d19;
+ --blue:#88a9e2;--blue-bg:#232e46;--teal:#88a9e2;--teal-bg:#232e46;
+ --amber:#cfb950;--amber-bg:#332d14;--gray-bg:#22231e;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-body{width:800px;padding:40px}
-.eyebrow{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink)}
-.small{font-size:13px;color:var(--muted);line-height:1.45}
-code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
-.box{border:1.5px solid var(--line);border-radius:14px;background:#fff}
-.num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
-  background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;flex:none}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"OpenAI Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body{width:800px;padding:28px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.small{font-size:14px;color:var(--muted);line-height:1.45}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.box{border:1px solid var(--frame);border-radius:8px;background:var(--card)}
+.num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;flex:none}
+.term,.region,.tip,.card,.box{background:var(--card)}

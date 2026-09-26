@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>@@TITLE@@ | Article preview</title>
+<meta name="description" content="@@DECK@@">
+<style>@@CSS@@</style>
+</head>
+<body>
+<a class="skip" href="#mainContent">Skip to article</a>
+<header class="sitebar"><span>OpenAI Developers</span><span class="review">Article preview</span>
+<button id="theme" type="button" aria-label="Switch color theme">Theme</button></header>
+<nav class="rail" aria-label="Blog navigation"><span class="rail-label">Developer blog</span><a href="#mainContent">All posts</a><span class="rail-label">Topics</span><a href="#mainContent">Codex</a></nav>
+<main>
+<div class="page">
+<div class="content">
+<header class="post-header">
+<div class="metadata">@@DATE@@ &nbsp; <span>@@CATEGORY@@</span></div>
+<h1>@@TITLE@@</h1>
+<p class="deck">@@DECK@@</p>
+<p class="author">Author: @@AUTHOR@@</p>
+</header>
+<div class="cover"><img src="@@COVER@@" alt="@@COVER_ALT@@" fetchpriority="high"></div>
+<article id="mainContent">@@BODY@@</article>
+</div>
+<aside aria-label="On this page"><nav>@@TOC@@</nav></aside>
+</div>
+</main>
+<script>
+document.getElementById("theme").addEventListener("click", () => {
+ const dark = document.documentElement.dataset.theme === "dark" ||
+   (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+ document.documentElement.dataset.theme = dark ? "light" : "dark";
+});
+</script>
+</body></html>

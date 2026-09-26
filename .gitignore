@@ -1,0 +1,4 @@
+new_post_assets/node_modules/
+new_post_assets/gifs/out/
+new_post_assets/.render-*/
+__pycache__/

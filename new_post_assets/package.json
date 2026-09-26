@@ -1,0 +1,18 @@
+{
+  "name": "codex-fullscreen-post-assets",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 build_preview.py --all",
+    "preview": "python3 build_preview.py",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@xterm/xterm": "5.5.0",
+    "marked": "12.0.2",
+    "node-pty": "1.0.0",
+    "playwright-core": "1.55.0",
+    "puppeteer-core": "24.0.0",
+    "ws": "8.18.0"
+  }
+}

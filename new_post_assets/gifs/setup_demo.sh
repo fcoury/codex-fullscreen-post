@@ -4,10 +4,20 @@
 # Nothing here touches ~/.codex. The provider points at a dead local port, so
 # Codex needs no sign-in and never calls a model; the tapes only replay history.
 set -euo pipefail
-root=$(cd "$(dirname "$1")" && pwd)/$(basename "$1")
 here=$(cd "$(dirname "$0")" && pwd)
+mkdir -p "$here/out"
+case "${SCENARIO_NAME:-demo}" in
+  demo|hero|copy|side) root="$here/out/demo-${SCENARIO_NAME:-demo}" ;;
+  *) echo "Unknown recording scenario" >&2; exit 1 ;;
+esac
+# Only remove the directory owned by this script. Never accept an arbitrary path.
+if [[ -L "$root" || ( -e "$root" && ! -f "$root/.codex-post-demo" ) ]]; then
+  echo "Refusing to reset unmarked demo directory: $root" >&2
+  exit 1
+fi
 rm -rf "$root"
 mkdir -p "$root/h/tidepool/src" "$root/demo-home"
+touch "$root/.codex-post-demo"
 (cd "$root/h/tidepool" && git init -q && touch src/lib.rs)
 cat > "$root/demo-home/config.toml" <<TOML
 model = "gpt-6-sol"
@@ -24,6 +34,7 @@ trust_level = "trusted"
 
 [tui]
 screen_reader_detection_done = true
+fullscreen_transcript = true
 TOML
 python3 "$here/make_demo_session.py" "$root/demo-home" "$root/h/tidepool" >/dev/null
 echo "$root"

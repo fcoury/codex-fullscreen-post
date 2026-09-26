@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import uuid
+import subprocess
 
 codex_home, project = sys.argv[1], os.path.abspath(sys.argv[2])
 sid = str(uuid.uuid4())
@@ -117,7 +118,7 @@ def diff(path, hunk):
 
 emit("session_meta", {
     "session_id": sid, "id": sid, "timestamp": ts(0), "cwd": project, "originator": "codex",
-    "cli_version": "0.157.0", "source": "cli", "thread_source": "user",
+    "cli_version": subprocess.check_output([os.environ["CODEX_BIN"], "--version"], text=True).strip().removeprefix("codex-cli "), "source": "cli", "thread_source": "user",
     "model_provider": "demo", "history_mode": "paginated",
     "git": {"branch": "refill-jitter", "commit_hash": "4be1c09d2e7a55f0b3c8e61d9a0f2c7b5e13a8d4"},
 }, 0)

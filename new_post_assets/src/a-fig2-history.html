@@ -1,97 +1,20 @@
-<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="a-fig.css">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="a-fig.css">
 <style>
-  svg text{font-family:Inter,sans-serif;fill:var(--ink)}
-  .h{font-size:14px;font-weight:700;letter-spacing:.09em}
-  .b{font-size:18px;font-weight:600}
-  .m{font-size:15.5px;fill:var(--muted)}
-  .mono{font-family:'JetBrains Mono',monospace}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:22px}
+h2{font-size:21px;letter-spacing:-.02em;margin:0 0 7px}p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+.screen{border:1px solid var(--frame);border-radius:8px;margin-top:20px;padding:15px;background:var(--card);height:208px;position:relative}
+.lost,.load{padding:9px 10px;border:1px dashed var(--line);color:var(--muted);border-radius:5px;font-size:15px}
+.lines{padding:13px 0;display:grid;gap:8px}.lines i{display:block;background:var(--line);height:5px;border-radius:2px}.lines i:nth-child(2n){width:65%}
+.prompt{position:absolute;bottom:12px;left:12px;right:12px;border:1px solid var(--frame);border-radius:5px;padding:8px 11px;font-size:15px}
+.focus .load,.focus .prompt{background:var(--blue-bg);border-color:var(--blue);color:var(--ink)}
+.note{border-top:1px solid var(--line);margin-top:18px;padding-top:12px}
 </style></head><body>
-<svg width="720" height="1080" viewBox="0 0 720 1080" fill="none">
-  <defs>
-    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="8" stroke="#dfe3eb" stroke-width="3"/>
-    </pattern>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M1 1 L9 5 L1 9" stroke="#5d6682" stroke-width="1.6" fill="none"/>
-    </marker>
-  </defs>
-
-  <!-- ============ CLASSIC ============ -->
-  <rect x="1" y="1" width="718" height="538" rx="16" stroke="#e3e7ef" stroke-width="1.5" fill="#fff"/>
-  <text x="28" y="44" class="h">CLASSIC SCROLLBACK</text>
-
-  <g>
-    <rect x="40" y="76"  width="260" height="28" rx="6" fill="url(#hatch)" stroke="#e3e7ef"/>
-    <rect x="40" y="112" width="260" height="28" rx="6" fill="url(#hatch)" stroke="#e3e7ef"/>
-    <rect x="40" y="148" width="260" height="28" rx="6" fill="url(#hatch)" stroke="#e3e7ef"/>
-  </g>
-  <line x1="28" y1="184" x2="312" y2="184" stroke="#ec6a4d" stroke-width="2" stroke-dasharray="6 5"/>
-  <g fill="#f0f4ff" stroke="#8fa9ee" stroke-width="1.5">
-    <rect x="40" y="192" width="260" height="28" rx="6"/>
-    <rect x="40" y="228" width="260" height="28" rx="6"/>
-    <rect x="40" y="264" width="260" height="28" rx="6"/>
-    <rect x="40" y="300" width="260" height="28" rx="6"/>
-    <rect x="40" y="336" width="260" height="28" rx="6"/>
-    <rect x="40" y="376" width="260" height="28" rx="6"/>
-    <rect x="40" y="412" width="260" height="28" rx="6"/>
-  </g>
-  <rect x="40" y="448" width="260" height="32" rx="6" fill="#fff1ed" stroke="#ec6a4d" stroke-width="2"/>
-  <text x="54" y="469" class="mono" style="font-size:15px;fill:#ec6a4d">› _</text>
-  <rect x="28" y="368" width="284" height="122" rx="10" stroke="#1b2440" stroke-width="2.5"/>
-  <text x="170" y="518" class="m" text-anchor="middle">your screen</text>
-
-  <text x="344" y="112" class="b">Dropped</text>
-  <text x="344" y="137" class="m">Past the scrollback limit,</text>
-  <text x="344" y="158" class="m">which varies by terminal</text>
-
-  <path d="M322 194 h8 v244 h-8" stroke="#5d6682" stroke-width="1.5"/>
-  <text x="344" y="276" class="b">Loaded up front</text>
-  <text x="344" y="301" class="m">The whole conversation renders</text>
-  <text x="344" y="322" class="m">at startup, so long sessions</text>
-  <text x="344" y="343" class="m">get slower to open</text>
-
-  <text x="344" y="462" class="b">Prompt scrolls with it</text>
-  <text x="344" y="487" class="m">Scroll back to reread a plan and</text>
-  <text x="344" y="508" class="m">your prompt leaves the screen</text>
-
-  <!-- ============ FULLSCREEN ============ -->
-  <g transform="translate(0 558)">
-  <rect x="1" y="1" width="718" height="518" rx="16" stroke="#e3e7ef" stroke-width="1.5" fill="#fff"/>
-  <text x="28" y="44" class="h">FULLSCREEN</text>
-
-  <g fill="#fff" stroke="#c3cad9" stroke-width="1.5" stroke-dasharray="5 4">
-    <rect x="40" y="76"  width="260" height="28" rx="6"/>
-    <rect x="40" y="112" width="260" height="28" rx="6"/>
-    <rect x="40" y="148" width="260" height="28" rx="6"/>
-  </g>
-  <rect x="28" y="182" width="284" height="172" rx="10" fill="#fbfcfe" stroke="#1b2440" stroke-width="2.5"/>
-  <g fill="#f0f4ff" stroke="#8fa9ee" stroke-width="1.5">
-    <rect x="40" y="194" width="260" height="28" rx="6"/>
-    <rect x="40" y="230" width="260" height="28" rx="6"/>
-    <rect x="40" y="266" width="260" height="28" rx="6"/>
-  </g>
-  <rect x="40" y="306" width="260" height="36" rx="7" fill="#fff1ed" stroke="#ec6a4d" stroke-width="2"/>
-  <text x="54" y="329" class="mono" style="font-size:15px;fill:#ec6a4d">› _</text>
-  <path d="M16 290 V86" stroke="#5d6682" stroke-width="1.5" marker-end="url(#arr)"/>
-  <g fill="#fff" stroke="#c3cad9" stroke-width="1.5" stroke-dasharray="5 4">
-    <rect x="40" y="366" width="260" height="28" rx="6"/>
-    <rect x="40" y="402" width="260" height="28" rx="6"/>
-    <rect x="40" y="438" width="260" height="28" rx="6"/>
-  </g>
-  <text x="170" y="498" class="m" text-anchor="middle">your screen, scrolled back</text>
-
-  <text x="344" y="104" class="b">Loaded on demand</text>
-  <text x="344" y="129" class="m">Scroll up and older history loads,</text>
-  <text x="344" y="150" class="m">all the way back to the start</text>
-
-  <path d="M322 196 h8 v96 h-8" stroke="#5d6682" stroke-width="1.5"/>
-  <text x="344" y="232" class="b">Only what you need</text>
-  <text x="344" y="257" class="m">Sessions open fast,</text>
-  <text x="344" y="278" class="m">however long they get</text>
-
-  <text x="344" y="322" class="b">Composer stays put</text>
-  <text x="344" y="347" class="m">Pinned to the screen while</text>
-  <text x="344" y="368" class="m">you scroll the history</text>
-  </g>
-</svg>
-</body></html>
+<div class="eyebrow">Where history lives</div>
+<div class="columns">
+<section><h2>Classic scrollback</h2><p>Owned by the terminal</p>
+<div class="screen"><div class="lost">Earlier messages can fall past the limit</div><div class="lines"><i></i><i></i><i></i><i></i><i></i></div><div class="prompt">› Prompt scrolls with history</div></div>
+<p class="note">Loads as much as possible up front. The terminal decides how much it keeps.</p></section>
+<section class="focus"><h2>Fullscreen</h2><p>Owned by Codex</p>
+<div class="screen"><div class="load">↑ Loads history when you scroll to it</div><div class="lines"><i></i><i></i><i></i><i></i><i></i></div><div class="prompt">› Composer stays on screen</div></div>
+<p class="note">Earlier messages load on demand. The composer remains ready for your next prompt.</p></section>
+</div></body></html>

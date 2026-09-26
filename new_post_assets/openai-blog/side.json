@@ -1,0 +1,13 @@
+{
+  "commit": "fd657137e3039b7450a1bf98fcc76a793775fa2b",
+  "version": "codex-cli 0.0.0",
+  "sha256": {
+    "codex": "cf66451a8761dde4cf9ed3aee2062298eafc7026f2701feae733e689f057a036",
+    "codex-code-mode-host": "01197959da63cfc49a3e4e90d99b3952c409ced3d87ad5b556d22f20bbb227be"
+  },
+  "columns": 150,
+  "rows": 36,
+  "fixtureRequests": 0,
+  "frames": 7,
+  "scenario": "side"
+}
