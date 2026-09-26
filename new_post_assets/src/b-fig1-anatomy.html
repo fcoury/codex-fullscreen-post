@@ -14,9 +14,12 @@
   .collapsed{margin-top:16px;border:1.5px dashed var(--teal);background:var(--teal-bg);border-radius:9px;padding:10px 14px;
     display:flex;align-items:center;gap:12px;font-size:14px;color:#2f7d70;font-family:'JetBrains Mono',monospace}
   .collapsed span{margin-left:auto;font-family:Inter,sans-serif;color:var(--muted);font-size:14px}
+  .collapsed em{font-style:normal;opacity:.75}
   .scroll{position:absolute;right:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:#dde5fb}
   .scroll:after{content:"";position:absolute;left:0;right:0;top:0;height:38px;border-radius:3px;background:var(--blue)}
-  .w{background:var(--amber-bg);border-color:var(--amber)}
+  .n{background:var(--teal-bg);border-color:var(--teal)}
+  .chip{margin-left:auto;flex:none;font-family:'JetBrains Mono',monospace;font-size:13px;border:1.5px solid var(--amber);
+    background:var(--amber-bg);color:#8a6414;border-radius:999px;padding:3px 11px}
   .h{background:var(--violet-bg);border-color:var(--violet)}
   .c{background:var(--coral-bg);border-color:var(--coral);border-width:2px}
   .c b .p{font-family:'JetBrains Mono',monospace;color:var(--coral);margin-right:8px}
@@ -29,14 +32,14 @@
     <div class="region t">
       <div class="row"><b>Transcript</b><p>No scrollback limit. History loads as you scroll to it.</p></div>
       <div class="ln" style="width:58%"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:44%"></div>
-      <div class="collapsed">▸ ran tests · 400 lines<span>collapsed until you need it</span></div>
+      <div class="collapsed">• Ran cargo test <em>+ Show details</em><span>collapsed until you need it</span></div>
       <div class="ln" style="width:66%;margin-top:16px"></div><div class="ln" style="width:50%"></div>
       <div class="scroll"></div>
     </div>
-    <div class="region w"><b>Warnings</b><p>In their own panel, out of your conversation.</p></div>
-    <div class="region h"><b>Hints &amp; shortcuts</b><p>Always just above the composer.</p></div>
+    <div class="region n"><b>Notices</b><p>Copy confirmations and “Back to bottom”, just above the composer.</p></div>
     <div class="region c"><b><span class="p">›</span>Composer</b><p>Never scrolls away.</p></div>
     <div class="region st"><b>Status line</b><p>Stays on screen, even with notices.</p></div>
+    <div class="region h"><b>Hints &amp; shortcuts</b><p>The bottom row. Warnings wait here as a count.</p><span class="chip">⚠ 1 warning · f2</span></div>
   </div>
 </div>
 </body></html>
