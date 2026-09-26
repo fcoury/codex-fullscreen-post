@@ -2,13 +2,14 @@
 
 Open ../new_post_preview.html directly. It contains the rendered article and
 inline CSS, and uses only relative assets. It works offline after generation.
-The CMS source is ../new_post.md; post.json holds the header and media captions.
+The CMS source is ../new_post.md, including standard Markdown GIFs and captions;
+post.json holds the header.
 Author and publication date are review fields, not a publication claim.
 
 ## Build the article and figures
 
-Requirements: Node 24+, Python 3.11+, ffmpeg/ffprobe (H.264, VP9 and GIF
-encoders). Run from the repository root:
+Requirements: Node 24+, Python 3.11+, ffmpeg/ffprobe (GIF encoder). Run from the
+repository root:
 
 ```sh
 cd new_post_assets
@@ -31,7 +32,7 @@ are generated gallery views; edit a-* instead.
 
 `npm run verify` checks that the article renders without any network requests,
 loads all lazy images as a reader scrolls, has meaningful alt text, three
-non-autoplay videos with posters and controls, working section links, no
+inline GIFs (and static stills for reduced motion), working section links, no
 horizontal overflow and correct header crop at 390, 768, 1280 and 1440px in
 light/dark. Review screenshots are in gifs/out/review/ (not committed).
 
@@ -75,15 +76,15 @@ npm --prefix new_post_assets run verify
 
 The side recording uses 150 columns, exceeding upstream's 145-column minimum.
 The hero/copy recordings use 120 for readability. There is no private 120-column
-side patch. Both real composers must contain their own drafts before the side
-recording can be accepted. The side clip depicts focus and drafts, not a claim
-about a model's response or performance.
+side patch. The side GIF shows an example question answered beside the parent,
+using a deterministic local provider. It is a UI demonstration, not a measure
+of model accuracy or latency.
 
-Each accepted recording replaces MP4, WebM, GIF, WebP poster and a small JSON
+Each accepted recording replaces a GIF, a reduced-motion WebP still and a small JSON
 source receipt in openai-blog/. It keeps the full frame sequence, terminal
 output, assertions and clipboard sample in gifs/out/<scenario>/ for review.
 Output there is synthetic and gitignored. Failed recordings leave the previous
-accepted clip in place; investigate failed.png and last-screen.txt.
+accepted GIF in place; investigate failed.png and last-screen.txt.
 
 setup_demo.sh resets only a marked, scenario-specific gifs/out/demo-* directory
 and refuses unmarked paths and symlinks. It no longer takes an arbitrary path.
@@ -91,9 +92,14 @@ The fixture's version comes from CODEX_BIN. The recorder uses a PTY and xterm,
 with a dead local provider for hero/copy and an isolated loopback Responses
 fixture for side. No production account or conversation history is used.
 
+The shared look, hero timing and copy sequence follow the original GIF notes.
+The recorder captures the actual terminal screen continuously at about 60 ms
+intervals, then uses the real timestamps and a 128-color palette for the GIF.
+It draws a cursor because headless Chromium does not show the system pointer.
 The copy recorder selects real text in Codex and requires both plaintext and
-HTML on the macOS clipboard. Its small overlay shows that HTML, not a simulated
-application paste. It preserves and restores the previous **plain-text**
+HTML on the macOS clipboard. It pastes that HTML into a mock notes window
+(the notes window is styled HTML, not an actual Notes application). It restores
+the previous **plain-text**
 clipboard; do not run it while non-text clipboard contents need to be retained.
 
 ## Native checks on this Mac (2026-09-26)

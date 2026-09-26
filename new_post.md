@@ -8,7 +8,9 @@ Fullscreen changes how selecting and copying text works in Codex CLI. Most of us
 
 Codex CLI 0.157.0 introduced a fullscreen view. Codex draws the transcript, composer and status line itself, in the same way that `vim`, `top` or `lazygit` own their terminal windows.
 
-<!-- MEDIA: hero -->
+![A long Codex session pages back to the beginning with its composer pinned, then returns to the latest message.](new_post_assets/openai-blog/hero.gif)
+
+*Scrolling through a saved example session; the composer stays in place.*
 
 When you scroll back, Codex loads earlier history as you reach it. The composer stays on screen, ready for your next message. Older messages no longer fall off the top because your terminal reached its scrollback limit.
 
@@ -16,7 +18,9 @@ When you scroll back, Codex loads earlier history as you reach it. The composer 
 
 Codex handles selection in fullscreen. On terminals that forward the usual copy key to the app, select text and use that shortcut. In other terminals, Codex copies as soon as you finish selecting.
 
-<!-- MEDIA: copy -->
+![Selecting prose and a code block in Codex, then pasting the formatted clipboard contents into a document.](new_post_assets/openai-blog/copy.gif)
+
+*Copy-on-select with prose and code in an example session.*
 
 | Default behavior | Where |
 | --- | --- |
@@ -49,7 +53,9 @@ The status line stays on screen when notices appear. Hints and shortcuts move to
 
 Once Codex owns the screen, it can put information beside the conversation and update each area in place. One experiment is `/side`: a second conversation alongside the first.
 
-<!-- MEDIA: side -->
+![Codex keeps the parent conversation on the left while a side conversation answers a question on the right.](new_post_assets/openai-blog/side.gif)
+
+*A development preview of /side, using an example conversation. The split requires at least 145 columns.*
 
 On wide terminals, the work in progress can remain visible while you ask a separate question. The preview gives each conversation its own composer; click a pane or use <kbd>Ctrl</kbd>+<kbd>/</kbd> to switch focus. Narrow terminals fall back to a single conversation. This is still in development.
 

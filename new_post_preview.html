@@ -25,9 +25,8 @@ article{padding-top:20px}article p,article li{line-height:25.6px;letter-spacing:
 article h2{font-size:2rem;line-height:2.375rem;letter-spacing:-.025em;color:var(--heading);font-weight:600;margin:48px 0 16px;scroll-margin-top:96px}
 article h3{font-size:1.5rem;color:var(--heading)}article ul,article ol{padding-left:24px;margin:12px 0 24px}article li{margin:7px 0}strong{font-weight:600;color:var(--heading)}
 code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.875em;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:2px 5px}kbd{border-bottom-width:2px}
-figure{margin:24px 0 32px}figure>img,video{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}
+figure{margin:24px 0 32px}figure>img,figure picture img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}figure.gif>a{display:block}
 figcaption{font-size:14px;line-height:1.55;color:var(--muted);margin-top:10px}
-.pending{padding:20px;border:1px dashed var(--line);border-radius:var(--radius);background:var(--soft)}
 .table-scroll{width:100%;overflow-x:auto;margin:20px 0 28px}
 table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:600;color:var(--heading)}td:first-child{width:34%}
 aside{display:none}
@@ -57,21 +56,15 @@ aside{display:none}
 <p>Fullscreen changes how selecting and copying text works in Codex CLI. Most of us on the team noticed the difference, and it took a couple of days for the new habit to settle in. Here&#39;s what changes, why we made it, and how to switch back if it doesn&#39;t work for you.</p>
 <h2 id="what-changes">What changes</h2>
 <p>Codex CLI 0.157.0 introduced a fullscreen view. Codex draws the transcript, composer and status line itself, in the same way that <code>vim</code>, <code>top</code> or <code>lazygit</code> own their terminal windows.</p>
-<figure aria-label="Codex pages back through a long session with the composer pinned, then jumps to the latest message."><video controls playsinline preload="metadata" poster="new_post_assets/openai-blog/hero-poster.webp"
-    aria-label="Codex pages back through a long session with the composer pinned, then jumps to the latest message."><source src="new_post_assets/openai-blog/hero.webm" type="video/webm">
-    <source src="new_post_assets/openai-blog/hero.mp4" type="video/mp4">
-    <a href="new_post_assets/openai-blog/hero.gif">View animated GIF: Codex pages back through a long session with the composer pinned, then jumps to the latest message.</a></video>
-    <figcaption>Scrolling through a saved example session; the composer stays in place. Recorded with codex-cli 0.0.0, source a4f03a05f940.</figcaption></figure>
-
+<figure class="gif"><a href="new_post_assets/openai-blog/hero.gif" aria-label="Open full size animation">
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/hero-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/hero.gif" alt="A long Codex session pages back to the beginning with its composer pinned, then returns to the latest message."></picture></a>
+    <figcaption>Scrolling through a saved example session; the composer stays in place.</figcaption></figure>
 <p>When you scroll back, Codex loads earlier history as you reach it. The composer stays on screen, ready for your next message. Older messages no longer fall off the top because your terminal reached its scrollback limit.</p>
 <h2 id="selecting-and-copying">Selecting and copying</h2>
 <p>Codex handles selection in fullscreen. On terminals that forward the usual copy key to the app, select text and use that shortcut. In other terminals, Codex copies as soon as you finish selecting.</p>
-<figure aria-label="A paragraph and code are selected in Codex and the formatted text appears on paste."><video controls playsinline preload="metadata" poster="new_post_assets/openai-blog/copy-poster.webp"
-    aria-label="A paragraph and code are selected in Codex and the formatted text appears on paste."><source src="new_post_assets/openai-blog/copy.webm" type="video/webm">
-    <source src="new_post_assets/openai-blog/copy.mp4" type="video/mp4">
-    <a href="new_post_assets/openai-blog/copy.gif">View animated GIF: A paragraph and code are selected in Codex and the formatted text appears on paste.</a></video>
-    <figcaption>Copy-on-select with prose and code. The example session is synthetic; the selection is made in Codex. Recorded with codex-cli 0.0.0, source a4f03a05f940.</figcaption></figure>
-
+<figure class="gif"><a href="new_post_assets/openai-blog/copy.gif" aria-label="Open full size animation">
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/copy-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/copy.gif" alt="Selecting prose and a code block in Codex, then pasting the formatted clipboard contents into a document."></picture></a>
+    <figcaption>Copy-on-select with prose and code in an example session.</figcaption></figure>
 <div class="table-scroll" tabindex="0"><table><thead><tr>
 <th>Default behavior</th>
 <th>Where</th>
@@ -95,12 +88,9 @@ aside{display:none}
 <p>The status line stays on screen when notices appear. Hints and shortcuts move to their own row at the bottom. Warnings show as a count there; <kbd>F2</kbd> opens them. Diffs and tool output can collapse, keeping long test runs available without filling the conversation.</p>
 <h2 id="what-we-39-re-building-next">What we&#39;re building next</h2>
 <p>Once Codex owns the screen, it can put information beside the conversation and update each area in place. One experiment is <code>/side</code>: a second conversation alongside the first.</p>
-<figure aria-label="A side conversation beside the parent, with independent composers."><video controls playsinline preload="metadata" poster="new_post_assets/openai-blog/side-poster.webp"
-    aria-label="A side conversation beside the parent, with independent composers."><source src="new_post_assets/openai-blog/side.webm" type="video/webm">
-    <source src="new_post_assets/openai-blog/side.mp4" type="video/mp4">
-    <a href="new_post_assets/openai-blog/side.gif">View animated GIF: A side conversation beside the parent, with independent composers.</a></video>
-    <figcaption>Preview of /side in development. The split requires at least 145 columns. Recorded with codex-cli 0.0.0, source fd657137e303.</figcaption></figure>
-
+<figure class="gif"><a href="new_post_assets/openai-blog/side.gif" aria-label="Open full size animation">
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/side-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/side.gif" alt="Codex keeps the parent conversation on the left while a side conversation answers a question on the right."></picture></a>
+    <figcaption>A development preview of /side, using an example conversation. The split requires at least 145 columns.</figcaption></figure>
 <p>On wide terminals, the work in progress can remain visible while you ask a separate question. The preview gives each conversation its own composer; click a pane or use <kbd>Ctrl</kbd>+<kbd>/</kbd> to switch focus. Narrow terminals fall back to a single conversation. This is still in development.</p>
 <p>We&#39;re also exploring a conversation information pane and ways to show agent activity in the terminal. We&#39;ll share more when those are ready.</p>
 <h2 id="give-it-a-try">Give it a try</h2>

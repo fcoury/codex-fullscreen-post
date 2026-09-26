@@ -5,22 +5,5 @@
   "category": "Codex",
   "date": "Publication date to be confirmed",
   "cover": "new_post_assets/openai-blog/cover.webp",
-  "coverAlt": "A terminal with earlier history above it and a composer pinned at the bottom.",
-  "media": {
-    "hero": {
-      "alt": "Codex pages back through a long session with the composer pinned, then jumps to the latest message.",
-      "caption": "Scrolling through a saved example session; the composer stays in place.",
-      "stem": "hero"
-    },
-    "copy": {
-      "alt": "A paragraph and code are selected in Codex and the formatted text appears on paste.",
-      "caption": "Copy-on-select with prose and code. The example session is synthetic; the selection is made in Codex.",
-      "stem": "copy"
-    },
-    "side": {
-      "alt": "A side conversation beside the parent, with independent composers.",
-      "caption": "Preview of /side in development. The split requires at least 145 columns.",
-      "stem": "side"
-    }
-  }
+  "coverAlt": "A terminal with earlier history above it and a composer pinned at the bottom."
 }

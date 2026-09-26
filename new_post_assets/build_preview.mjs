@@ -21,30 +21,19 @@ renderer.heading = (text, level) => {
 };
 renderer.table = (head, body) => `<div class="table-scroll" tabindex="0"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 marked.setOptions({renderer, gfm:true});
-function media(name) {
-  const m = post.media[name];
-  if (!m) throw Error("Unknown MEDIA key: " + name);
-  const prefix = `new_post_assets/openai-blog/${m.stem}`;
-  const exists = ext => fs.existsSync(path.join(root, prefix + ext));
-  if (!exists(".mp4")) {
-    return `<figure class="pending"><p>${esc(m.alt)}</p><figcaption>${esc(m.caption)} Recording pending source build.</figcaption></figure>`;
-  }
-  const poster = exists("-poster.webp") ? ` poster="${prefix}-poster.webp"` : "";
-  const provenance = exists(".json")
-    ? JSON.parse(fs.readFileSync(path.join(root,prefix + ".json"),"utf8"))
-    : null;
-  const receipt = provenance ? ` Recorded with ${esc(provenance.version)}, source ${esc(provenance.commit.slice(0,12))}.` : " Existing recording; source refresh pending.";
-  return `<figure aria-label="${esc(m.alt)}"><video controls playsinline preload="metadata"${poster}
-    aria-label="${esc(m.alt)}">${exists(".webm") ? `<source src="${prefix}.webm" type="video/webm">` : ""}
-    <source src="${prefix}.mp4" type="video/mp4">
-    ${exists(".gif") ? `<a href="${prefix}.gif">View animated GIF: ${esc(m.alt)}</a>` : esc(m.alt)}</video>
-    <figcaption>${esc(m.caption + receipt)}</figcaption></figure>`;
-}
-const input = md.replace(/<!--\s*MEDIA:\s*([\w-]+)\s*-->/g, (_, name) => media(name));
-let body = marked.parse(input);
+let body = marked.parse(md);
 // Standard Markdown images + italic caption remain portable to the CMS.
-body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>([^<]*)<\/em><\/p>/g,
-  (_,img,caption) => `<figure>${img.replace("<img ", '<img loading="lazy" decoding="async" ')}<figcaption>${caption}</figcaption></figure>`);
+body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>([^<]*)<\/em><\/p>/g, (_,img,caption) => {
+  const image = img.replace("<img ", '<img loading="lazy" decoding="async" ');
+  const src = img.match(/src="([^"]+\.gif)"/)?.[1];
+  if (!src) return `<figure>${image}<figcaption>${caption}</figcaption></figure>`;
+  const poster = src.replace(/\.gif$/, "-poster.webp");
+  if (!fs.existsSync(path.join(root, src)) || !fs.existsSync(path.join(root, poster)))
+    throw Error("Missing GIF or reduced-motion still: " + src);
+  return `<figure class="gif"><a href="${src}" aria-label="Open full size animation">
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="${poster}">${image}</picture></a>
+    <figcaption>${caption}</figcaption></figure>`;
+});
 const tmpl=fs.readFileSync(path.join(assets,"src/preview.html"),"utf8");
 const css=fs.readFileSync(path.join(assets,"src/preview.css"),"utf8");
 const fields = {
