@@ -105,8 +105,7 @@ await term.evaluate(async () => {
   const t = window.term, cell = t._core._renderService.dimensions.css.cell;
   const box = t.element.parentElement.getBoundingClientRect();
   t.resize(Math.floor((box.width - 2) / cell.width), Math.floor(box.height / cell.height));
-  return { box: box.height, cell: cell.height, rows: t.rows };
-}).then((g) => console.error("resized", JSON.stringify(g)));
+});
 await sleep(600);
 
 // Wait for Codex to finish replaying the session.
