@@ -23,7 +23,7 @@ renderer.table = (head, body) => `<div class="table-scroll" tabindex="0"><table>
 marked.setOptions({renderer, gfm:true});
 let body = marked.parse(md);
 // Standard Markdown images + italic caption remain portable to the CMS.
-body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>([^<]*)<\/em><\/p>/g, (_,img,caption) => {
+body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>((?:(?!<\/p>)[\s\S])*?)<\/em><\/p>/g, (_,img,caption) => {
   const image = img.replace("<img ", '<img loading="lazy" decoding="async" ');
   const src = img.match(/src="([^"]+\.gif)"/)?.[1];
   if (!src) return `<figure>${image}<figcaption>${caption}</figcaption></figure>`;

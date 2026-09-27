@@ -8,7 +8,7 @@ But the change behind it makes Codex much better at long sessions, which is incr
 
 ## What's new
 
-The centerpiece of Codex CLI 0.157.0 is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
+The centerpiece of Codex CLI 0.157.0 is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of adding to your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
 
 ![A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message.](new_post_assets/openai-blog/hero.gif)
 
