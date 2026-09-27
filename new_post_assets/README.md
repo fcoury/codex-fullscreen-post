@@ -120,7 +120,14 @@ export DEMO_ROOT=$(SCENARIO_NAME=hero ./setup_demo.sh) && vhs hero.tape         
 export DEMO_ROOT=$(SCENARIO_NAME=copy ./setup_demo.sh) && node record_copy.mjs   # out/copy.gif
 gifsicle -O3 --lossy=40 --colors 128 out/hero.gif -o ../openai-blog/hero.gif
 gifsicle -O3 --lossy=40 --colors 128 out/copy.gif -o ../openai-blog/copy.gif
+node record_paste.mjs                                                            # out/paste-both.gif
+gifsicle -O3 --lossy=40 --colors 128 out/paste-both.gif -o ../openai-blog/paste-both.gif
 ```
+
+paste-both.gif needs no Codex: paste-both.html holds the exact text/plain and text/html
+the copy recording put on the clipboard (out/copy-clipboard.{txt,html}) and plays the two
+pastes. Open it in a browser to preview; add ?final for the end state. Update it by hand if
+the copy recording's content changes.
 
 Then refresh the posters (a frame through `cwebp -q 90`), update the version and
 frame count in hero.json and copy.json, rebuild the figures (fig1 takes its frame

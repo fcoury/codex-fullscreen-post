@@ -52,15 +52,21 @@ You'll also notice some smaller changes:
 
 In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.
 
+There's a bright side to Codex owning the selection. Your terminal only sees characters on a screen, but Codex knows what they are: a paragraph, a list, a code block. So when your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your editor, a terminal or a Markdown field and you get the Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
+
 ![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer, and pasting into a notes app keeps the paragraph, the inline code and the code block.](new_post_assets/openai-blog/copy.gif)
 
 *Copy-on-select in an example session, then pasting into a notes app.*
+
+![The clipboard from that copy, pasted into two apps. A plain-text editor shows the raw Markdown with backticks and code fences; a notes app shows a formatted paragraph, inline code and a code block.](new_post_assets/openai-blog/paste-both.gif)
+
+*One copy, pasted twice: a Markdown editor gets the Markdown, and a notes app gets the formatting.*
 
 **In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working.** Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex copies the moment you finish selecting, so you don't need a shortcut. The same goes for anything inside tmux or Zellij.
 
 Those are the defaults when Codex can tell which terminal you're in. Ghostty needs to report its version, and custom keybindings or remote sessions can change which keys reach Codex. If you'd rather choose for yourself, set `copy_on_select` in the `[tui]` section of your config to `auto` (the default), `always` or `never`.
 
-Either way, what you copy now pastes back cleanly. When your selection includes prose, Codex puts both Markdown and formatted text on your clipboard, so you get the right one depending on where you paste. A code-only selection copies as plain text. And if you ever need your terminal's own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.
+A code-only selection copies as plain text, and over SSH the copy travels through your terminal, so you get the Markdown. And if you ever need your terminal's own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.
 
 We're still smoothing out rough edges, so keep the reports coming. `/feedback` is the fastest way to reach us.
 

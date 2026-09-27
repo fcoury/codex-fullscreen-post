@@ -1,0 +1,123 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Paste both ways</title>
+<!-- One copy from Codex, pasted twice. The payloads below are the exact
+     text/plain and text/html flavors Codex wrote to the macOS clipboard in the
+     copy recording (gifs/out/copy-clipboard.{txt,html}). Plays on load; click to
+     replay. Add ?final to show the end state. The editor soft-wraps line 1. Recorded by record_paste.mjs. -->
+<style>
+  :root{--bg:#0e0e10;--win:#1d1e22;--bar:#26272c;--line:#34353b;--ink:#e4e3de;--muted:#9a9a93;
+    --dim:#6c6c66;--code:#93d4c0;--key:#88a9e2;--num:#e5c07b;--str:#7bd88f;--cmt:#7d7d86}
+  html,body{margin:0;width:1200px;height:500px;overflow:hidden;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+  .clip{position:absolute;left:50%;top:26px;transform:translateX(-50%);display:flex;gap:8px;align-items:center;
+    font-size:14px;color:var(--muted);border:1px solid var(--line);background:#16171a;border-radius:999px;padding:7px 16px}
+  .clip b{color:var(--ink);font-weight:600}
+  .clip code{font:12.5px "JetBrains Mono",monospace;color:var(--code);background:#101113;border:1px solid var(--line);
+    border-radius:6px;padding:1px 6px}
+  .win{position:absolute;top:84px;width:546px;height:336px;background:var(--win);border:1px solid var(--line);
+    border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden}
+  .win.left{left:36px}.win.right{right:36px}
+  .top{height:36px;background:var(--bar);border-bottom:1px solid var(--line);display:flex;align-items:center;
+    padding:0 14px;gap:8px;font-size:13px;color:var(--muted)}
+  .top i{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .top span{margin-left:8px}
+  .label{position:absolute;top:442px;width:546px;text-align:center;font-size:15px;color:var(--muted)}
+  .label b{color:var(--ink);font-weight:600}
+  .label.left{left:36px}.label.right{right:36px}
+  /* Plain-text editor */
+  .editor{display:flex;padding:16px 0;font:14px/23px "JetBrains Mono",monospace}
+  .gutter{width:44px;text-align:right;padding-right:14px;color:var(--dim);flex:none}
+  .src{white-space:pre;color:var(--ink);min-width:0}
+  .src .tick{color:var(--dim)} .src .ic{color:var(--code)} .src .fence{color:var(--dim)}
+  .src .k{color:var(--key)} .src .n{color:var(--num)} .src .s{color:var(--str)} .src .c{color:var(--cmt)}
+  /* Rich-text notes */
+  .rich{padding:20px 26px;font-size:16px;line-height:1.55}
+  .rich h3{margin:0 0 10px;font-size:20px}
+  .rich p{margin:0 0 12px}
+  .rich code{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--code)}
+  .rich pre{background:#141518;border:1px solid #303137;border-radius:8px;padding:12px 14px;margin:0;
+    font:14px/1.5 "JetBrains Mono",monospace;white-space:pre}
+  .rich pre code{color:var(--ink)}
+  .caret{display:inline-block;width:2px;height:18px;background:var(--ink);vertical-align:-4px;animation:b 1s steps(1) infinite}
+  @keyframes b{50%{opacity:0}}
+  .paste{opacity:0;transition:opacity .18s}
+  .paste.on{opacity:1}
+  .keys{position:absolute;top:356px;transform:translateX(-50%);opacity:0;transition:opacity .2s;
+    background:rgba(20,20,24,.92);color:#fff;border:1px solid #444;border-radius:10px;padding:8px 16px;
+    font:600 20px -apple-system,system-ui;z-index:20}
+  .keys.on{opacity:1}
+  #cursor{position:absolute;width:22px;height:22px;pointer-events:none;z-index:30;transition:left .6s cubic-bezier(.45,0,.25,1),top .6s cubic-bezier(.45,0,.25,1)}
+</style></head><body>
+<div class="clip"><b>Clipboard</b> one copy, two formats: <code>text/plain</code> Markdown + <code>text/html</code></div>
+
+<div class="win left">
+  <div class="top"><i style="background:#ff5f58"></i><i style="background:#ffbd2e"></i><i style="background:#18c132"></i><span>pr-description.md — Editor</span></div>
+  <div class="editor">
+    <div class="gutter">1<span class="paste" id="gut"><br>&nbsp;<br>2<br>3<br>4<br>5<br>6<br>7<br>8</span></div>
+    <div class="src"><span class="caret" id="caretL"></span><span class="paste" id="md">For the PR description, this is the <span class="tick">`</span><span class="ic">[limiter]</span><span class="tick">`</span> 
+config a service needs to opt in:
+
+<span class="fence">```</span>
+<span class="k">[limiter]</span>
+rate = <span class="n">100</span>          <span class="c"># tokens per second</span>
+burst = <span class="n">20</span>
+refill_jitter = { min = <span class="s">"0ms"</span>, max = <span class="s">"25ms"</span> }
+<span class="fence">```</span></span></div>
+  </div>
+</div>
+<div class="label left"><b>Plain-text app</b> gets the Markdown</div>
+
+<div class="win right">
+  <div class="top"><i style="background:#ff5f58"></i><i style="background:#ffbd2e"></i><i style="background:#18c132"></i><span>PR description — Notes</span></div>
+  <div class="rich">
+    <h3>Opt in to refill jitter</h3>
+    <span class="caret" id="caretR"></span>
+    <div class="paste" id="html"><p>For the PR description, this is the <code>[limiter]</code> config a service needs to opt in:</p>
+<pre><code>[limiter]
+rate = 100          # tokens per second
+burst = 20
+refill_jitter = { min = "0ms", max = "25ms" }
+</code></pre></div>
+  </div>
+</div>
+<div class="label right"><b>Rich-text app</b> gets the formatting</div>
+
+<div class="keys" id="keys">⌘V</div>
+<svg id="cursor" viewBox="0 0 22 22" style="left:600px;top:470px"><path d="M5 2v16l4.2-4 2.8 6.3 2.4-1-2.8-6.2H17z"
+  fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const moveTo = (x, y) => { $("cursor").style.left = x + "px"; $("cursor").style.top = y + "px"; };
+function reset() {
+  for (const id of ["md", "gut", "html"]) $(id).classList.remove("on");
+  $("caretL").style.display = ""; $("caretR").style.display = "";
+  $("keys").classList.remove("on"); moveTo(600, 470);
+}
+function finish() {
+  for (const id of ["md", "gut", "html"]) $(id).classList.add("on");
+  $("caretL").style.display = "none"; $("caretR").style.display = "none";
+}
+async function pasteInto(side, x) {
+  moveTo(x, 250); await wait(750);
+  $("keys").style.left = x + "px"; $("keys").classList.add("on"); await wait(380);
+  $(side === "left" ? "caretL" : "caretR").style.display = "none";
+  $(side === "left" ? "md" : "html").classList.add("on");
+  if (side === "left") $("gut").classList.add("on");
+  await wait(300);
+  $("keys").classList.remove("on");
+}
+window.play = async () => {
+  reset(); await wait(700);
+  await pasteInto("left", 309); await wait(1300);
+  await pasteInto("right", 891); await wait(2600);
+};
+window.playing = null;
+if (new URLSearchParams(location.search).has("final")) finish();
+else if (!new URLSearchParams(location.search).has("record")) {
+  window.playing = window.play();
+  document.addEventListener("click", () => { window.playing = window.play(); });
+}
+</script>
+</body></html>
