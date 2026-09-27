@@ -4,7 +4,7 @@ Listerine once ran an ad with the tagline *"The taste you hate, twice a day."* I
 
 So, in that spirit: Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you'll notice. Most of us on the team did.
 
-But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also gives us a foundation to build new features that a plain scrolling terminal never could.
+But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also lets us build features that a plain scrolling terminal can't support.
 
 ## What's new
 
@@ -32,7 +32,7 @@ Fullscreen removes those limits:
 - No scrollback ceiling. Keep scrolling and Codex keeps loading, all the way back to the start of the session.
 - Your prompt never scrolls away. Reread a plan or an earlier diff while the composer stays right where it is, ready for your next message.
 
-With that, streaming is lighter. The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, except on slow terminals. Now, fullscreen redraws exactly what changed.
+Streaming is lighter too. The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, except on slow terminals. Fullscreen redraws only what changed.
 
 You'll also notice some other changes:
 
@@ -43,13 +43,13 @@ You'll also notice some other changes:
 - Hints and keyboard shortcuts get their own row at the bottom of the screen.
 - The status line stays on screen, even when contextual notices appear.
 - Warnings move out of the transcript. A count waits in the bottom row, and <kbd>F2</kbd> opens them, so your conversation stays about your work.
-- Diffs and tool output collapse but are expandable on demand in case you need more details.
+- Diffs and tool output collapse, and you can expand them when you need the details.
 
 ## The taste you'll notice: copy and paste
 
 In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.
 
-But your terminal only sees characters on a screen, where Codex knows what they are: a paragraph, a list, a code block. When your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your code editor, terminal or a text field on a page and you get the raw Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
+It also means Codex can copy more than your terminal could. Your terminal only sees characters on a screen, while Codex knows what they are: a paragraph, a list, a code block. When your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your code editor, terminal or a text field on a page and you get the raw Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
 
 ![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer. The same copy is then pasted twice: a plain-text editor gets the raw Markdown with backticks and code fences, and a notes app gets a formatted paragraph, inline code and a code block.](new_post_assets/openai-blog/copy.gif)
 
@@ -57,7 +57,7 @@ But your terminal only sees characters on a screen, where Codex knows what they 
 
 In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working. Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex copies the moment you finish selecting, so you don't need a shortcut. Inside tmux or Zellij, Codex also copies on select.
 
-Those are the defaults when Codex can tell which terminal you're in. Detection depends on your terminal reports (Ghostty, for example, has to report its version), and custom keybindings or remote sessions can change which keys reach Codex. If you'd rather choose for yourself, set `copy_on_select` in the `[tui]` section of your config to `auto` (the default), `always` or `never`.
+Those are the defaults when Codex can tell which terminal you're in. Detection depends on what your terminal reports (Ghostty, for example, has to report its version), and custom keybindings or remote sessions can change which keys reach Codex. If you'd rather choose for yourself, set `copy_on_select` in the `[tui]` section of your config to `auto` (the default), `always` or `never`.
 
 A code-only selection copies as plain text. Over SSH the copy travels through your terminal, so you get the Markdown. And if you ever need your terminal's own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.
 
@@ -65,19 +65,19 @@ Terminals, multiplexers and keybindings vary more than any of us can test, and w
 
 ## Where this is going
 
-Faster long sessions and richer copy and paste are just the beginning. The bigger reason we made this change is what comes next.
+Faster long sessions and richer copy and paste are what you get today. The bigger reason we made this change is what it lets us build next.
 
-Now that Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we're building on top of it:
+Now that Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. Here are a few things we're building on it.
 
 ![Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer.](new_post_assets/openai-blog/side.gif)
 
 *A development preview of `/side`, using an example conversation. The split needs a terminal at least 145 columns wide.*
 
-The first is /side, and this time it really is side by side. You can ask a quick question in a second conversation that sits next to your main one, and the task in progress keeps going. In the preview, each conversation has its own composer. Click a pane or press <kbd>Ctrl</kbd>+<kbd>/</kbd> to move between them. On narrower terminals you still see one conversation at a time.
+The first is `/side`, and this time it really is side by side. You can ask a quick question in a second conversation that sits next to your main one, and the task in progress keeps going. In the preview, each conversation has its own composer. Click a pane or press <kbd>Ctrl</kbd>+<kbd>/</kbd> to move between them. On narrower terminals you still see one conversation at a time.
 
 We're also working on a pane that sits next to the transcript and shows information about the current conversation. If you've used the side panels in the Codex desktop app, it's similar, but built for the terminal.
 
-These are early ideas, and they'll change as we build them and hear from you. What they share is that none of them could work in the classic view.
+These are early ideas, and they'll change as we build them and hear from you. None of them could work in the classic view.
 
 ## Scrollback or fullscreen?
 
@@ -98,7 +98,7 @@ If you lean on tmux copy mode, want the conversation left in your terminal after
 
 ## Give it a fair try
 
-We know we're asking a lot. Fullscreen changes habits you've built over years, and we won't have gotten everything right on the first try. The first day can feel off. So we'd like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.
+We know we're asking a lot. Fullscreen changes habits you've built over years, and the first day can feel off. We also won't have gotten everything right on the first try. So we'd like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.
 
 If it still isn't for you, the classic scrollback view is one command away:
 
@@ -109,5 +109,3 @@ If it still isn't for you, the classic scrollback view is one command away:
 Codex remembers your choice for future launches. To come back to fullscreen, run `/tui`, choose **Fullscreen**, and restart. If you manage your config by hand, the same switch is `fullscreen_transcript = false` under `[tui]`.
 
 Whichever view you land on, tell us how it goes. Run `/feedback`. If fullscreen doesn't work for you, we want to know why, because that's what we'll fix next.
-
-The taste you'll notice, for a few days. The rest, we think you'll keep.
