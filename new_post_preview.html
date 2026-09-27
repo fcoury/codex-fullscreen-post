@@ -86,7 +86,7 @@ aside{display:none}
 </ul>
 <h2 id="the-taste-you-39-ll-notice-copy-and-paste">The taste you&#39;ll notice: copy and paste</h2>
 <p>In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.</p>
-<p>There&#39;s a bright side to Codex owning the selection. Your terminal only sees characters on a screen, but Codex knows what they are: a paragraph, a list, a code block. So when your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your editor, a terminal or a Markdown field and you get the Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.</p>
+<p>However, your terminal only sees characters on a screen, where Codex knows what they are: a paragraph, a list, a code block. When your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your code editor, terminal or a text field on a page and you get the raw Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/copy.gif" aria-label="Open full size animation">
     <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/copy-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/copy.gif" alt="Dragging across a reply and its code block in Codex. &quot;Copied 187 chars to host clipboard&quot; appears above the composer. The same copy is then pasted twice: a plain-text editor gets the raw Markdown with backticks and code fences, and a notes app gets a formatted paragraph, inline code and a code block."></picture></a>
     <figcaption>Copy-on-select in an example session, then one copy pasted twice: a Markdown editor gets the Markdown, and a notes app gets the formatting.</figcaption></figure>
@@ -95,8 +95,8 @@ aside{display:none}
 <p>A code-only selection copies as plain text, and over SSH the copy travels through your terminal, so you get the Markdown. And if you ever need your terminal&#39;s own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.</p>
 <p>We&#39;re still smoothing out rough edges, so keep the reports coming. <code>/feedback</code> is the fastest way to reach us.</p>
 <h2 id="where-this-is-going">Where this is going</h2>
-<p>Long sessions are the benefit you get today. The bigger reason we made this change is what comes next.</p>
-<p>A scrolling log can only add lines at the bottom. Once Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we&#39;re building on top of it:</p>
+<p>Long sessions and multi format copy and paste are the benefits you get today. The bigger reason we made this change is what comes next.</p>
+<p>Now Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we&#39;re building on top of it:</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/side.gif" aria-label="Open full size animation">
     <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/side-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/side.gif" alt="Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer."></picture></a>
     <figcaption>A development preview of /side, using an example conversation. The split needs a terminal at least 145 columns wide.</figcaption></figure>
