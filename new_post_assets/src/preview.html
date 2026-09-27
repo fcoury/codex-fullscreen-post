@@ -34,5 +34,29 @@ document.getElementById("theme").addEventListener("click", () => {
    (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
  document.documentElement.dataset.theme = dark ? "light" : "dark";
 });
+const demo = document.querySelector(".gif-manual");
+if (demo) {
+ const screen = demo.querySelector("a");
+ const image = screen.querySelector("img");
+ const control = demo.querySelector(".demo-control");
+ const still = image.getAttribute("src");
+ let playing = false;
+ function toggleDemo() {
+   playing = !playing;
+   image.src = playing ? screen.getAttribute("href") : still;
+   control.textContent = playing ? "■ Stop demo" : "▶ Play demo";
+   control.setAttribute("aria-label", (playing ? "Stop" : "Play") + " fullscreen scrolling demo");
+   screen.setAttribute("aria-label", control.getAttribute("aria-label"));
+ }
+ control.hidden = false;
+ screen.setAttribute("aria-label", control.getAttribute("aria-label"));
+ control.addEventListener("click", toggleDemo);
+ screen.addEventListener("click", event => {
+   // Preserve the normal link for "open full size" in a new tab.
+   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+   event.preventDefault();
+   toggleDemo();
+ });
+}
 </script>
 </body></html>

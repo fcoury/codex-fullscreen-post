@@ -26,8 +26,9 @@ article h2{font-size:2rem;line-height:2.375rem;letter-spacing:-.025em;color:var(
 article h3{font-size:1.5rem;color:var(--heading)}article ul,article ol{padding-left:24px;margin:12px 0 24px}article li{margin:7px 0}strong{font-weight:600;color:var(--heading)}
 code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.875em;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:2px 5px}kbd{border-bottom-width:2px}
 article img{max-width:100%;height:auto}
-figure{margin:24px 0 32px}figure>img,figure picture img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}figure.gif>a{display:block}
+figure{margin:24px 0 32px}figure>img,figure.gif>a img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}figure.gif>a{display:block}
 figcaption{font-size:14px;line-height:1.55;color:var(--muted);margin-top:10px}
+.demo-control{margin:0 10px 4px 0;font-size:14px}.demo-control:hover{color:var(--heading);border-color:var(--muted)}
 .table-scroll{width:100%;overflow-x:auto;margin:20px 0 28px}
 table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:600;color:var(--heading)}td:first-child{width:34%}
 aside{display:none}
@@ -55,12 +56,12 @@ aside{display:none}
 <div class="cover"><img src="new_post_assets/openai-blog/cover.webp" alt="A terminal with earlier history above it and a composer pinned at the bottom." fetchpriority="high"></div>
 <article id="mainContent"><p>Listerine once ran an ad with the tagline <em>&quot;The taste you hate, twice a day.&quot;</em> It worked because it admitted what everyone already knew and turned it into proof: if it tastes that strong, it must be doing something.</p>
 <p>So, in that spirit: Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you&#39;ll notice. Most of us on the team did.</p>
-<p>But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also gives us a foundation to build new features that a plain scrolling terminal never could.</p>
+<p>But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also lets us build features that a plain scrolling terminal can&#39;t support.</p>
 <h2 id="what-39-s-new">What&#39;s new</h2>
 <p>The centerpiece of Codex CLI 0.157.0 is a new fullscreen view, where Codex takes over the whole terminal window, the same way <code>vim</code>, <code>top</code> or <code>lazygit</code> do. Instead of adding to your terminal&#39;s scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.</p>
-<figure class="gif"><a href="new_post_assets/openai-blog/hero.gif" aria-label="Open full size animation">
-    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/hero-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/hero.gif" alt="A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message."></picture></a>
-    <figcaption>Scrolling back through a long example session. The composer stays where it is the whole way.</figcaption></figure>
+<figure class="gif gif-manual"><a href="new_post_assets/openai-blog/hero.gif" aria-label="Open full size animation">
+    <img loading="lazy" decoding="async" id="intro-demo" src="new_post_assets/openai-blog/hero-poster.webp" alt="A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message."></a>
+    <figcaption><button type="button" class="demo-control" aria-controls="intro-demo" aria-label="Play fullscreen scrolling demo" hidden>▶ Play demo</button>Scrolling back through a long example session. The composer stays where it is the whole way.</figcaption></figure>
 <h2 id="built-for-long-sessions">Built for long sessions</h2>
 <p>When we first built Codex, managing context was a big part of working with the model. You&#39;d often start fresh just to keep a session from getting polluted.</p>
 <p>That&#39;s changed. Models have gotten much better at managing context, compaction is now reliable, and with memory in the mix, long sessions no longer need babysitting. Codex sessions have grown from short, focused exchanges into agents that run for long stretches.</p>
@@ -72,34 +73,34 @@ aside{display:none}
 <li>No scrollback ceiling. Keep scrolling and Codex keeps loading, all the way back to the start of the session.</li>
 <li>Your prompt never scrolls away. Reread a plan or an earlier diff while the composer stays right where it is, ready for your next message.</li>
 </ul>
-<p>With that, streaming is lighter. The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, except on slow terminals. Now, fullscreen redraws exactly what changed.</p>
+<p>Streaming is lighter too. The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, except on slow terminals. Fullscreen redraws only what changed.</p>
 <p>You&#39;ll also notice some other changes:</p>
 <figure><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/fig1-anatomy.webp" alt="A real Codex screen after scrolling back. 1 marks the transcript with collapsed tool output, 2 the &quot;Back to bottom&quot; notice, 3 the pinned composer, and 4 the status line and shortcuts."><figcaption>Figure 2. A frame from the example session. The transcript scrolls; the notice row, composer, status line and shortcuts stay put.</figcaption></figure>
 <ul>
 <li>Hints and keyboard shortcuts get their own row at the bottom of the screen.</li>
 <li>The status line stays on screen, even when contextual notices appear.</li>
 <li>Warnings move out of the transcript. A count waits in the bottom row, and <kbd>F2</kbd> opens them, so your conversation stays about your work.</li>
-<li>Diffs and tool output collapse but are expandable on demand in case you need more details.</li>
+<li>Diffs and tool output collapse, and you can expand them when you need the details.</li>
 </ul>
 <h2 id="the-taste-you-39-ll-notice-copy-and-paste">The taste you&#39;ll notice: copy and paste</h2>
 <p>In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.</p>
-<p>But your terminal only sees characters on a screen, where Codex knows what they are: a paragraph, a list, a code block. When your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your code editor, terminal or a text field on a page and you get the raw Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.</p>
+<p>It also means Codex can copy more than your terminal could. Your terminal only sees characters on a screen, while Codex knows what they are: a paragraph, a list, a code block. When your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your code editor, terminal or a text field on a page and you get the raw Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/copy.gif" aria-label="Open full size animation">
     <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/copy-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/copy.gif" alt="Dragging across a reply and its code block in Codex. &quot;Copied 187 chars to host clipboard&quot; appears above the composer. The same copy is then pasted twice: a plain-text editor gets the raw Markdown with backticks and code fences, and a notes app gets a formatted paragraph, inline code and a code block."></picture></a>
     <figcaption>Copy-on-select in an example session, then one copy pasted twice: a Markdown editor gets the Markdown, and a notes app gets the formatting.</figcaption></figure>
 <p>In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working. Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex copies the moment you finish selecting, so you don&#39;t need a shortcut. Inside tmux or Zellij, Codex also copies on select.</p>
-<p>Those are the defaults when Codex can tell which terminal you&#39;re in. Detection depends on your terminal reports (Ghostty, for example, has to report its version), and custom keybindings or remote sessions can change which keys reach Codex. If you&#39;d rather choose for yourself, set <code>copy_on_select</code> in the <code>[tui]</code> section of your config to <code>auto</code> (the default), <code>always</code> or <code>never</code>.</p>
+<p>Those are the defaults when Codex can tell which terminal you&#39;re in. Detection depends on what your terminal reports (Ghostty, for example, has to report its version), and custom keybindings or remote sessions can change which keys reach Codex. If you&#39;d rather choose for yourself, set <code>copy_on_select</code> in the <code>[tui]</code> section of your config to <code>auto</code> (the default), <code>always</code> or <code>never</code>.</p>
 <p>A code-only selection copies as plain text. Over SSH the copy travels through your terminal, so you get the Markdown. And if you ever need your terminal&#39;s own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.</p>
 <p>Terminals, multiplexers and keybindings vary more than any of us can test, and we&#39;ve surely missed some setups. If copying doesn&#39;t work the way you expect in yours, <code>/feedback</code> is the fastest way to tell us, and it&#39;s how most of these defaults got fixed.</p>
 <h2 id="where-this-is-going">Where this is going</h2>
-<p>Faster long sessions and richer copy and paste are just the beginning. The bigger reason we made this change is what comes next.</p>
-<p>Now that Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we&#39;re building on top of it:</p>
+<p>Faster long sessions and richer copy and paste are what you get today. The bigger reason we made this change is what it lets us build next.</p>
+<p>Now that Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. Here are a few things we&#39;re building on it.</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/side.gif" aria-label="Open full size animation">
     <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/side-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/side.gif" alt="Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer."></picture></a>
     <figcaption>A development preview of <code>/side</code>, using an example conversation. The split needs a terminal at least 145 columns wide.</figcaption></figure>
-<p>The first is /side, and this time it really is side by side. You can ask a quick question in a second conversation that sits next to your main one, and the task in progress keeps going. In the preview, each conversation has its own composer. Click a pane or press <kbd>Ctrl</kbd>+<kbd>/</kbd> to move between them. On narrower terminals you still see one conversation at a time.</p>
+<p>The first is <code>/side</code>, and this time it really is side by side. You can ask a quick question in a second conversation that sits next to your main one, and the task in progress keeps going. In the preview, each conversation has its own composer. Click a pane or press <kbd>Ctrl</kbd>+<kbd>/</kbd> to move between them. On narrower terminals you still see one conversation at a time.</p>
 <p>We&#39;re also working on a pane that sits next to the transcript and shows information about the current conversation. If you&#39;ve used the side panels in the Codex desktop app, it&#39;s similar, but built for the terminal.</p>
-<p>These are early ideas, and they&#39;ll change as we build them and hear from you. What they share is that none of them could work in the classic view.</p>
+<p>These are early ideas, and they&#39;ll change as we build them and hear from you. None of them could work in the classic view.</p>
 <h2 id="scrollback-or-fullscreen">Scrollback or fullscreen?</h2>
 <p>Fullscreen isn&#39;t free. Classic scrollback has real strengths, and they&#39;re why switching back is one command away. Here&#39;s how the two compare:</p>
 <div class="table-scroll" tabindex="0"><table><thead><tr>
@@ -149,7 +150,7 @@ aside{display:none}
 </tr>
 </tbody></table></div><p>If you lean on tmux copy mode, want the conversation left in your terminal after you quit, or just prefer your terminal&#39;s own selection everywhere, scrollback may suit you better, and it isn&#39;t going away. We think fullscreen is the better fit for long sessions, but that&#39;s for you to decide.</p>
 <h2 id="give-it-a-fair-try">Give it a fair try</h2>
-<p>We know we&#39;re asking a lot. Fullscreen changes habits you&#39;ve built over years, and we won&#39;t have gotten everything right on the first try. The first day can feel off. So we&#39;d like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.</p>
+<p>We know we&#39;re asking a lot. Fullscreen changes habits you&#39;ve built over years, and the first day can feel off. We also won&#39;t have gotten everything right on the first try. So we&#39;d like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.</p>
 <p>If it still isn&#39;t for you, the classic scrollback view is one command away:</p>
 <ol>
 <li>Run <code>/tui</code>.</li>
@@ -158,7 +159,6 @@ aside{display:none}
 </ol>
 <p>Codex remembers your choice for future launches. To come back to fullscreen, run <code>/tui</code>, choose <strong>Fullscreen</strong>, and restart. If you manage your config by hand, the same switch is <code>fullscreen_transcript = false</code> under <code>[tui]</code>.</p>
 <p>Whichever view you land on, tell us how it goes. Run <code>/feedback</code>. If fullscreen doesn&#39;t work for you, we want to know why, because that&#39;s what we&#39;ll fix next.</p>
-<p>The taste you&#39;ll notice, for a few days. The rest, we think you&#39;ll keep.</p>
 </article>
 </div>
 <aside aria-label="On this page"><nav><a href="#what-39-s-new">What&#39;s new</a>
@@ -175,5 +175,29 @@ document.getElementById("theme").addEventListener("click", () => {
    (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
  document.documentElement.dataset.theme = dark ? "light" : "dark";
 });
+const demo = document.querySelector(".gif-manual");
+if (demo) {
+ const screen = demo.querySelector("a");
+ const image = screen.querySelector("img");
+ const control = demo.querySelector(".demo-control");
+ const still = image.getAttribute("src");
+ let playing = false;
+ function toggleDemo() {
+   playing = !playing;
+   image.src = playing ? screen.getAttribute("href") : still;
+   control.textContent = playing ? "■ Stop demo" : "▶ Play demo";
+   control.setAttribute("aria-label", (playing ? "Stop" : "Play") + " fullscreen scrolling demo");
+   screen.setAttribute("aria-label", control.getAttribute("aria-label"));
+ }
+ control.hidden = false;
+ screen.setAttribute("aria-label", control.getAttribute("aria-label"));
+ control.addEventListener("click", toggleDemo);
+ screen.addEventListener("click", event => {
+   // Preserve the normal link for "open full size" in a new tab.
+   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+   event.preventDefault();
+   toggleDemo();
+ });
+}
 </script>
 </body></html>

@@ -22,6 +22,7 @@ renderer.heading = (text, level) => {
 renderer.table = (head, body) => `<div class="table-scroll" tabindex="0"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 marked.setOptions({renderer, gfm:true});
 let body = marked.parse(md);
+let firstGif = true;
 // Standard Markdown images + italic caption remain portable to the CMS.
 body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>((?:(?!<\/p>)[\s\S])*?)<\/em><\/p>/g, (_,img,caption) => {
   const image = img.replace("<img ", '<img loading="lazy" decoding="async" ');
@@ -30,6 +31,13 @@ body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>((?:(?!<\/p>)[\s\S])*?)<\/em
   const poster = src.replace(/\.gif$/, "-poster.webp");
   if (!fs.existsSync(path.join(root, src)) || !fs.existsSync(path.join(root, poster)))
     throw Error("Missing GIF or reduced-motion still: " + src);
+  if (firstGif) {
+    firstGif = false;
+    const still = image.replace(`src="${src}"`, `id="intro-demo" src="${poster}"`);
+    return `<figure class="gif gif-manual"><a href="${src}" aria-label="Open full size animation">
+    ${still}</a>
+    <figcaption><button type="button" class="demo-control" aria-controls="intro-demo" aria-label="Play fullscreen scrolling demo" hidden>▶ Play demo</button>${caption}</figcaption></figure>`;
+  }
   return `<figure class="gif"><a href="${src}" aria-label="Open full size animation">
     <picture><source media="(prefers-reduced-motion: reduce)" srcset="${poster}">${image}</picture></a>
     <figcaption>${caption}</figcaption></figure>`;

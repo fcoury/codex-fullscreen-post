@@ -18,8 +18,9 @@ article h2{font-size:2rem;line-height:2.375rem;letter-spacing:-.025em;color:var(
 article h3{font-size:1.5rem;color:var(--heading)}article ul,article ol{padding-left:24px;margin:12px 0 24px}article li{margin:7px 0}strong{font-weight:600;color:var(--heading)}
 code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.875em;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:2px 5px}kbd{border-bottom-width:2px}
 article img{max-width:100%;height:auto}
-figure{margin:24px 0 32px}figure>img,figure picture img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}figure.gif>a{display:block}
+figure{margin:24px 0 32px}figure>img,figure.gif>a img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}figure.gif>a{display:block}
 figcaption{font-size:14px;line-height:1.55;color:var(--muted);margin-top:10px}
+.demo-control{margin:0 10px 4px 0;font-size:14px}.demo-control:hover{color:var(--heading);border-color:var(--muted)}
 .table-scroll{width:100%;overflow-x:auto;margin:20px 0 28px}
 table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:600;color:var(--heading)}td:first-child{width:34%}
 aside{display:none}
