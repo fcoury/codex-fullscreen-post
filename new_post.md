@@ -2,17 +2,17 @@
 
 Codex CLI 0.157.0 can take over your whole terminal window. Owning the screen lets Codex do things a scrolling terminal can't: collapse long diffs and tool output until you want the details, keep your composer pinned to the bottom while you read back, copy text with its formatting, and open long sessions quickly.
 
-It also changes how selecting text works. If you've spent years dragging across terminal output, you'll notice. Below is what changed, how copying works now, and how to switch to Scrollback if Fullscreen isn't for you.
+It also changes how selecting text works. If you've spent years dragging across terminal output, you'll notice.
 
 ## What's new
 
-The centerpiece of Codex CLI 0.157.0 is a new Fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of adding to your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer and the status line.
+In the new Fullscreen view, Codex works the way `vim`, `top` or `lazygit` do. Instead of adding to your terminal's scrollback, it draws and manages the entire screen: the transcript, the composer and the status line.
 
 ![A long Codex session in Fullscreen. The view pages up through dozens of turns while the composer stays pinned to the bottom, reaches the start of the session, then jumps back to the latest message.](new_post_assets/openai-blog/hero.gif)
 
 *Scrolling back through a long example session. The composer stays pinned to the bottom the whole way.*
 
-The change you'll use most is that diffs and tool output now collapse. A long test run or a big edit takes up a few lines in the transcript instead of pages, and you can expand it when you need the details. The conversation stays readable, and the output is still there when you want it.
+The change you'll use most is that diffs and tool output now collapse. A long test run or a big edit takes up a few lines in the transcript instead of pages, and you can expand it when you need the details.
 
 ![A Codex session in Fullscreen, scrolled back into the history. An edit, a cargo test run and a search each show a short summary with a "Show details" line beneath it. A "Back to bottom" notice sits above the composer, and the status line and shortcuts sit below it.](new_post_assets/openai-blog/collapsed-output.webp)
 
@@ -56,13 +56,11 @@ If Codex can't tell which terminal you're in, or you'd rather choose for yoursel
 
 A code-only selection copies as plain text. Over SSH, you get the raw Markdown as plain text. And if you ever need your terminal's own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.
 
-Codex supports many terminals, multiplexers and configurations, and we've tested many combinations, but some issues may remain. If copying doesn't work the way you expect in yours, run `/feedback` and tell us.
+Codex supports many terminals, multiplexers and configurations. We've tested a lot of combinations, but some issues may remain. If copying doesn't work the way you expect in yours, run `/feedback` and tell us.
 
 ## Where this is going
 
-Collapsible output, faster long sessions and richer copying are what you get today. Owning the screen also opens up what we can build next.
-
-Now that Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. Here are a few things we're exploring.
+Collapsible output, faster long sessions and richer copying are what you get today. Owning the whole screen also lets Codex put things side by side, update them in place, and give each kind of information its own space. Here are a few things we're exploring.
 
 ![Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer.](new_post_assets/openai-blog/side.gif)
 
