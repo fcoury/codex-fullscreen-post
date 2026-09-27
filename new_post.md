@@ -52,7 +52,7 @@ You'll also notice some smaller changes:
 
 In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.
 
-There's a bright side to Codex owning the selection. Your terminal only sees characters on a screen, but Codex knows what they are: a paragraph, a list, a code block. So when your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your editor, a terminal or a Markdown field and you get the Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
+But there's a bright side: your terminal only sees characters on a screen, but Codex knows what they are: a paragraph, a list, a code block. So when your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your editor, a terminal or a Markdown field and you get the Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
 
 ![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer. The same copy is then pasted twice: a plain-text editor gets the raw Markdown with backticks and code fences, and a notes app gets a formatted paragraph, inline code and a code block.](new_post_assets/openai-blog/copy.gif)
 
