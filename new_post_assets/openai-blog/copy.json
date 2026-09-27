@@ -1,13 +1,10 @@
 {
-  "commit": "a4f03a05f9409adeb98477331704d92b2b34dd7c",
-  "version": "codex-cli 0.0.0",
-  "sha256": {
-    "codex": "f130bb33903f9b0013a33b98379f84b942af7d9be40e30a003f7d449c9f90c8e",
-    "codex-code-mode-host": "01197959da63cfc49a3e4e90d99b3952c409ced3d87ad5b556d22f20bbb227be"
-  },
+  "version": "codex-cli 0.159.0-alpha.6",
+  "binary": "npm install via vite-plus (codex on PATH)",
+  "recorder": "node record_copy.mjs",
   "columns": 120,
-  "rows": 36,
+  "rows": 35,
   "fixtureRequests": 0,
-  "frames": 176,
+  "frames": 217,
   "scenario": "copy"
 }

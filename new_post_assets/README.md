@@ -107,6 +107,29 @@ HTML on the macOS clipboard. It pastes that HTML into a mock notes window
 the previous **plain-text**
 clipboard; do not run it while non-text clipboard contents need to be retained.
 
+## Recording hero and copy on a release build
+
+The current hero and copy GIFs come from an installed release, not a source build.
+Hero uses VHS; copy uses record_copy.mjs, because VHS can't drag the mouse.
+
+```sh
+brew install vhs gifsicle webp && brew install --cask font-jetbrains-mono
+cd new_post_assets/gifs && npm install
+export CODEX_BIN=$(command -v codex)            # check: $CODEX_BIN --version
+export DEMO_ROOT=$(SCENARIO_NAME=hero ./setup_demo.sh) && vhs hero.tape          # out/hero.gif
+export DEMO_ROOT=$(SCENARIO_NAME=copy ./setup_demo.sh) && node record_copy.mjs   # out/copy.gif
+gifsicle -O3 --lossy=40 --colors 128 out/hero.gif -o ../openai-blog/hero.gif
+gifsicle -O3 --lossy=40 --colors 128 out/copy.gif -o ../openai-blog/copy.gif
+```
+
+Then refresh the posters (a frame through `cwebp -q 90`), update the version and
+frame count in hero.json and copy.json, rebuild the figures (fig1 takes its frame
+from gifs/out/hero.gif at 1.75s) and run `npm --prefix new_post_assets run verify`.
+common.tape holds the shared look (1200×870, JetBrains Mono 16, line height 1.1);
+record_copy.mjs reads it too. The copy recorder writes to the real macOS clipboard
+and restores the previous plain text when it exits. Its notes window is dark, like
+the one in record.mjs, so the post has no bright panels.
+
 ## Native checks on this Mac (2026-09-26)
 
 Both used the source-built banner CLI + Code Mode host at a4f03a05f940.
@@ -128,7 +151,10 @@ env CODEX_BIN=/absolute/path/from/build_source.py bash new_post_assets/gifs/nati
 
 ## Status for review
 
-- Hero/copy are from published #10754 at a4f03a05f940, not post-merge main.
+- Hero/copy are recorded on the released codex-cli 0.159.0-alpha.6 (see
+  "Recording hero and copy on a release build"), so their session header is the
+  boxed card, not #10754's compact banner. Earlier hero/copy takes from #10754 at
+  a4f03a05f940 are in this branch's history. fig1 is a frame from the alpha.6 hero.
 - Side is from fcoury/fullscreen-post-side-recording at fd657137e303: #10754
   plus published #9996 at e6245d52f10d and its #10107/#10104 ancestors.
   Both builds completed with matching CLI + host. Only integration conflicts

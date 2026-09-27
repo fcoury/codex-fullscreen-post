@@ -52,63 +52,126 @@ aside{display:none}
 <p class="author">Author: Codex team</p>
 </header>
 <div class="cover"><img src="new_post_assets/openai-blog/cover.webp" alt="A terminal with earlier history above it and a composer pinned at the bottom." fetchpriority="high"></div>
-<article id="mainContent"><p>In <em>The 22 Immutable Laws of Marketing</em>, Al Ries and Jack Trout describe an ad for Listerine built around a candid admission about its taste. The idea stuck with us while working on this update.</p>
-<p>Fullscreen changes how selecting and copying text works in Codex CLI. Most of us on the team noticed the difference, and it took a couple of days for the new habit to settle in. Here&#39;s what changes, why we made it, and how to switch back if it doesn&#39;t work for you.</p>
-<h2 id="what-changes">What changes</h2>
-<p>Codex CLI 0.157.0 introduced a fullscreen view. Codex draws the transcript, composer and status line itself, in the same way that <code>vim</code>, <code>top</code> or <code>lazygit</code> own their terminal windows.</p>
+<article id="mainContent"><p>In <em>The 22 Immutable Laws of Marketing</em>, Al Ries and Jack Trout tell the story of a Listerine ad with an unlikely tagline: <em>&quot;The taste you hate, twice a day.&quot;</em> It&#39;s their example of the Law of Candor. Admit a negative, and people will give you a positive. The ad worked because it said out loud what everyone already knew, and turned it into proof: if it tastes that strong, it must be doing something.</p>
+<p>So, in that spirit: <strong>Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you&#39;re going to notice.</strong> Most of us on the team did. It took a couple of days for the new muscle memory to set in.</p>
+<p>But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also gives us a foundation to build new features that a plain scrolling terminal never could.</p>
+<h2 id="what-39-s-new">What&#39;s new</h2>
+<p>Codex CLI 0.157.0 is our largest update since launch. Its centerpiece is a new fullscreen view, where Codex takes over the whole terminal window, the same way <code>vim</code>, <code>top</code> or <code>lazygit</code> do. Instead of printing into your terminal&#39;s scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/hero.gif" aria-label="Open full size animation">
-    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/hero-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/hero.gif" alt="A long Codex session pages back to the beginning with its composer pinned, then returns to the latest message."></picture></a>
-    <figcaption>Scrolling through a saved example session; the composer stays in place.</figcaption></figure>
-<p>When you scroll back, Codex loads earlier history as you reach it. The composer stays on screen, ready for your next message. Older messages no longer fall off the top because your terminal reached its scrollback limit.</p>
-<h2 id="selecting-and-copying">Selecting and copying</h2>
-<p>Codex handles selection in fullscreen. On terminals that forward the usual copy key to the app, select text and use that shortcut. In other terminals, Codex copies as soon as you finish selecting.</p>
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/hero-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/hero.gif" alt="A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message."></picture></a>
+    <figcaption>Scrolling back through a long example session. The composer stays where it is the whole way.</figcaption></figure>
+<h2 id="built-for-long-sessions">Built for long sessions</h2>
+<p>When we first built Codex, managing context was a big part of working with the model. You&#39;d often start fresh just to keep a session from getting polluted.</p>
+<p>That&#39;s changed. Models have gotten really good at managing context, compaction is now rock solid, and with memory in the mix, long sessions no longer need babysitting. Codex has grown from short, focused exchanges into agents that run for long stretches.</p>
+<p>The classic view wasn&#39;t built for that. It lived inside your terminal&#39;s scrollback, so it was bound by limits that vary from terminal to terminal. And because we never knew if or when you&#39;d scroll back, we had to load as much of the conversation as we could up front. The longer the session, the more we loaded, and older history still fell off the top.</p>
+<figure><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/fig2-history.webp" alt="Two views of the same history. In classic scrollback the terminal holds it: the oldest turns fall past its limit and the prompt can scroll out of view. In fullscreen Codex holds it: earlier turns stay available, the visible ones load as needed, and the composer stays pinned."><figcaption>Figure 1. In the classic view your terminal holds the history, loads it all up front and drops whatever falls past its limit. In fullscreen, Codex holds it, loads what you scroll to and keeps the composer in place.</figcaption></figure>
+<p>Fullscreen removes those limits:</p>
+<ul>
+<li><strong>Sessions open fast, however long they get.</strong> History loads as you scroll to it.</li>
+<li><strong>No scrollback ceiling.</strong> Keep scrolling and Codex keeps loading, all the way back to the start of the session.</li>
+<li><strong>Your prompt never scrolls away.</strong> Reread a plan or an earlier diff while the composer stays right where it is, ready for your next message.</li>
+</ul>
+<p>A few more things get better along the way:</p>
+<ul>
+<li><strong>Streaming output looks right.</strong> The classic view could only append lines or redraw the whole screen, so streamed tables and lists had to repaint the entire scrollback as they grew. Thanks to Rust and some careful engineering you rarely felt it, but you could on slow terminals and high-latency SSH connections. Fullscreen redraws exactly what changed.</li>
+<li><strong>One way of working, everywhere.</strong> Parts of Codex, like the command center and the transcript, were already fullscreen. Now everything scrolls, selects and navigates the same way.</li>
+</ul>
+<p>You&#39;ll also notice some smaller changes:</p>
+<figure><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/fig1-anatomy.webp" alt="A real Codex screen after scrolling back. 1 marks the transcript with collapsed tool output, 2 the &quot;Back to bottom&quot; notice, 3 the pinned composer, and 4 the status line and shortcuts."><figcaption>Figure 2. A frame from the example session. The transcript scrolls; the notice row, composer, status line and shortcuts stay put.</figcaption></figure>
+<ul>
+<li><strong>Hints and keyboard shortcuts</strong> get their own row at the bottom of the screen.</li>
+<li><strong>The status line</strong> stays on screen, even when contextual notices appear.</li>
+<li><strong>Warnings</strong> move out of the transcript. A count waits in the bottom row, and <kbd>F2</kbd> opens them, so your conversation stays about your work.</li>
+<li><strong>Diffs and tool output collapse</strong>, so those 400 lines of test results are there only when you want them.</li>
+</ul>
+<h2 id="the-taste-you-39-ll-notice-copy-and-paste">The taste you&#39;ll notice: copy and paste</h2>
+<p>In fullscreen, Codex handles text selection itself, and that changes a habit you probably use dozens of times a day.</p>
 <figure class="gif"><a href="new_post_assets/openai-blog/copy.gif" aria-label="Open full size animation">
-    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/copy-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/copy.gif" alt="Selecting prose and a code block in Codex, then pasting the formatted clipboard contents into a document."></picture></a>
-    <figcaption>Copy-on-select with prose and code in an example session.</figcaption></figure>
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/copy-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/copy.gif" alt="Dragging across a reply and its code block in Codex. &quot;Copied 187 chars to host clipboard&quot; appears above the composer, and pasting into a notes app keeps the paragraph, the inline code and the code block."></picture></a>
+    <figcaption>Copy-on-select in an example session, then pasting into a notes app.</figcaption></figure>
+<p><strong>In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working.</strong> Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex copies the moment you finish selecting, so you don&#39;t need a shortcut. The same goes for anything inside tmux or Zellij.</p>
+<p>Those are the defaults when Codex can tell which terminal you&#39;re in. Ghostty needs to report its version, and custom keybindings or remote sessions can change which keys reach Codex. If you&#39;d rather choose for yourself, set <code>copy_on_select</code> in the <code>[tui]</code> section of your config to <code>auto</code> (the default), <code>always</code> or <code>never</code>.</p>
+<p>Either way, what you copy now pastes back cleanly. When your selection includes prose, Codex puts both Markdown and formatted text on your clipboard, so you get the right one depending on where you paste. A code-only selection copies as plain text. And if you ever need your terminal&#39;s own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.</p>
+<p>We&#39;re still smoothing out rough edges, so keep the reports coming. <code>/feedback</code> is the fastest way to reach us.</p>
+<h2 id="where-this-is-going">Where this is going</h2>
+<p>Long sessions are the benefit you get today. The bigger reason we made this change is what comes next.</p>
+<p>A scrolling log can only add lines at the bottom. Once Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we&#39;re building on top of it:</p>
+<figure class="gif"><a href="new_post_assets/openai-blog/side.gif" aria-label="Open full size animation">
+    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/side-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/side.gif" alt="Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer."></picture></a>
+    <figcaption>A development preview of /side, using an example conversation. The split needs a terminal at least 145 columns wide.</figcaption></figure>
+<ul>
+<li><strong><code>/side</code>, actually side by side.</strong> Ask a quick question in a second conversation shown next to your main one, without derailing the task in progress. In the preview, each conversation gets its own composer; click a pane or press <kbd>Ctrl</kbd>+<kbd>/</kbd> to switch. Narrower terminals fall back to one conversation at a time.</li>
+<li><strong>A pane for your conversation.</strong> If you&#39;ve used the side panels in the Codex desktop app, imagine a version built for the terminal: a pane alongside the transcript with information about the current conversation.</li>
+<li><strong>Visualizations built for the terminal.</strong> Richer ways to see what your agents are doing, designed for the TUI instead of squeezed into a log.</li>
+</ul>
+<p>None of these could work in the classic view. We&#39;ll share more as they land.</p>
+<h2 id="scrollback-or-fullscreen">Scrollback or fullscreen?</h2>
+<p>Fullscreen isn&#39;t free. Classic scrollback has real strengths, and they&#39;re why switching back is one command away. Here&#39;s how the two compare:</p>
 <div class="table-scroll" tabindex="0"><table><thead><tr>
-<th>Default behavior</th>
-<th>Where</th>
+<th></th>
+<th>Classic scrollback</th>
+<th>Fullscreen</th>
 </tr>
 </thead><tbody><tr>
-<td>Use your usual copy shortcut</td>
-<td>Ghostty 1.2+ when its version is detected, kitty on macOS, Windows Terminal (including WSL), and VS Code on Windows</td>
+<td><strong>History</strong></td>
+<td>Your terminal keeps it, up to its scrollback limit</td>
+<td>Codex keeps it, back to the start of the session</td>
 </tr>
 <tr>
-<td>Copies when you finish selecting</td>
-<td>Terminal.app, iTerm2, other terminals and anything inside tmux or Zellij</td>
+<td><strong>Opening a long session</strong></td>
+<td>Loads the whole conversation up front</td>
+<td>Loads history as you scroll to it</td>
 </tr>
-</tbody></table></div><p>These are Codex&#39;s defaults for a directly detected terminal. Terminal versions, custom keybindings and remote sessions can affect what keys reach the app. If you prefer to choose, set <code>copy_on_select</code> under <code>[tui]</code> to <code>&quot;auto&quot;</code>, <code>&quot;always&quot;</code> or <code>&quot;never&quot;</code>.</p>
-<p>When the selection includes prose, Codex offers Markdown and formatted text to the clipboard. A code-only selection copies as plain text. If you need the terminal&#39;s own selection, use your terminal&#39;s selection override; the modifier varies between terminals.</p>
-<h2 id="why-long-sessions-needed-this">Why long sessions needed this</h2>
-<p>When we first built Codex, managing context often meant starting fresh. Compaction and memory now make it easier to keep working in the same conversation, so the limits of terminal scrollback show up more often.</p>
-<p>The classic view lived inside that scrollback. We couldn&#39;t know when you would scroll back, so we loaded as much conversation as we could up front. The longer the session, the more we loaded, and older history could still fall off the top.</p>
-<figure><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/fig2-history.webp" alt="Two history tapes: terminal scrollback drops the oldest turns past its limit and the prompt can leave view; Codex keeps earlier turns available, loads the visible ones as needed and pins the composer."><figcaption>Figure 1. History belongs to the terminal in classic view and to Codex in fullscreen.</figcaption></figure>
-<p>Fullscreen loads history as you reach it, so opening a long session no longer means drawing the whole transcript into scrollback. It can also redraw just the parts of streaming output that changed. That helps with growing tables and lists, especially on slower terminals or high-latency connections.</p>
-<figure><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/fig1-anatomy.webp" alt="A real Codex screen after scrolling: 1 marks the transcript and collapsed tool output, 2 the Back to bottom notice, 3 the pinned composer, and 4 the status and shortcuts."><figcaption>Figure 2. A frame from the recorded example session. The numbered areas show how the transcript and pinned controls share the screen.</figcaption></figure>
-<p>The status line stays on screen when notices appear. Hints and shortcuts move to their own row at the bottom. Warnings show as a count there; <kbd>F2</kbd> opens them. Diffs and tool output can collapse, keeping long test runs available without filling the conversation.</p>
-<h2 id="what-we-39-re-building-next">What we&#39;re building next</h2>
-<p>Once Codex owns the screen, it can put information beside the conversation and update each area in place. One experiment is <code>/side</code>: a second conversation alongside the first.</p>
-<figure class="gif"><a href="new_post_assets/openai-blog/side.gif" aria-label="Open full size animation">
-    <picture><source media="(prefers-reduced-motion: reduce)" srcset="new_post_assets/openai-blog/side-poster.webp"><img loading="lazy" decoding="async" src="new_post_assets/openai-blog/side.gif" alt="Codex keeps the parent conversation on the left while a side conversation answers a question on the right."></picture></a>
-    <figcaption>A development preview of /side, using an example conversation. The split requires at least 145 columns.</figcaption></figure>
-<p>On wide terminals, the work in progress can remain visible while you ask a separate question. The preview gives each conversation its own composer; click a pane or use <kbd>Ctrl</kbd>+<kbd>/</kbd> to switch focus. Narrow terminals fall back to a single conversation. This is still in development.</p>
-<p>We&#39;re also exploring a conversation information pane and ways to show agent activity in the terminal. We&#39;ll share more when those are ready.</p>
-<h2 id="give-it-a-try">Give it a try</h2>
-<p>Give fullscreen a few days if you can. If the change still doesn&#39;t suit how you work, the classic scrollback view is one command away:</p>
+<tr>
+<td><strong>Scrolling</strong></td>
+<td>Your terminal&#39;s scrollbar, wheel and keys; your prompt scrolls away with the history</td>
+<td>Wheel, <kbd>PgUp</kbd>/<kbd>PgDn</kbd> and <kbd>Ctrl</kbd>+<kbd>Home</kbd>/<kbd>End</kbd>; the composer stays put</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Your terminal&#39;s find</td>
+<td><kbd>F3</kbd> searches the transcript</td>
+</tr>
+<tr>
+<td><strong>Selecting and copying</strong></td>
+<td>Your terminal&#39;s selection, exactly as it always works</td>
+<td>Codex&#39;s selection, with Markdown and formatted text, on select or with your usual shortcut</td>
+</tr>
+<tr>
+<td><strong>Mouse</strong></td>
+<td>Belongs to your terminal</td>
+<td>Codex uses it to select, expand tool output and open links; your terminal&#39;s override gets it back</td>
+</tr>
+<tr>
+<td><strong>tmux and other multiplexers</strong></td>
+<td>Their scrollback and copy mode see the whole conversation</td>
+<td>They see the current screen; the history lives in Codex</td>
+</tr>
+<tr>
+<td><strong>After you quit</strong></td>
+<td>The conversation stays in your terminal</td>
+<td>Your terminal goes back to the shell; <code>codex resume</code> brings the session back</td>
+</tr>
+</tbody></table></div><p>If you lean on tmux copy mode, want the conversation left in your terminal after you quit, or just prefer your terminal&#39;s own selection everywhere, scrollback may suit you better. For long sessions, fullscreen is the better fit.</p>
+<h2 id="give-it-a-fair-try">Give it a fair try</h2>
+<p>We know we&#39;re asking for something. Fullscreen changes habits you&#39;ve built over years, and the first day can feel off. So we&#39;d like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.</p>
+<p>If it still isn&#39;t for you, the classic scrollback view is one command away:</p>
 <ol>
 <li>Run <code>/tui</code>.</li>
 <li>Choose <strong>Scrollback</strong>.</li>
 <li>Restart Codex.</li>
 </ol>
-<p>Codex remembers your choice. To return, run <code>/tui</code>, choose <strong>Fullscreen</strong>, and restart. The equivalent config setting is <code>fullscreen_transcript = false</code> under <code>[tui]</code>.</p>
-<p>Run <code>/feedback</code> and let us know what would make fullscreen work for you.</p>
+<p>Codex remembers your choice for future launches. To come back to fullscreen, run <code>/tui</code>, choose <strong>Fullscreen</strong>, and restart. If you manage your config by hand, the same switch is <code>fullscreen_transcript = false</code> under <code>[tui]</code>.</p>
+<p>Whichever view you land on, tell us how it goes. Run <code>/feedback</code> and let us know what would make fullscreen work for you.</p>
+<p>The taste you&#39;ll notice, for a few days. The rest, we think you&#39;ll keep.</p>
 </article>
 </div>
-<aside aria-label="On this page"><nav><a href="#what-changes">What changes</a>
-<a href="#selecting-and-copying">Selecting and copying</a>
-<a href="#why-long-sessions-needed-this">Why long sessions needed this</a>
-<a href="#what-we-39-re-building-next">What we&#39;re building next</a>
-<a href="#give-it-a-try">Give it a try</a></nav></aside>
+<aside aria-label="On this page"><nav><a href="#what-39-s-new">What&#39;s new</a>
+<a href="#built-for-long-sessions">Built for long sessions</a>
+<a href="#the-taste-you-39-ll-notice-copy-and-paste">The taste you&#39;ll notice: copy and paste</a>
+<a href="#where-this-is-going">Where this is going</a>
+<a href="#scrollback-or-fullscreen">Scrollback or fullscreen?</a>
+<a href="#give-it-a-fair-try">Give it a fair try</a></nav></aside>
 </div>
 </main>
 <script>

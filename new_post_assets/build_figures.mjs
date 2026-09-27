@@ -7,8 +7,10 @@ import {launchBrowser} from "./browser.mjs";
 const root=path.dirname(fileURLToPath(import.meta.url));
 // The first slow PageUp in the recorded CLI: the real "Back to bottom" notice,
 // composer, status and shortcuts are all on screen. No redraw of the TUI.
+// Prefer the uncompressed recording so the figure doesn't inherit GIF compression noise.
+const heroRaw=path.join(root,"gifs/out/hero.gif");
 execFileSync("ffmpeg",["-v","error","-y","-ss","1.75","-i",
-  path.join(root,"openai-blog/hero.gif"),"-frames:v","1",
+  fs.existsSync(heroRaw) ? heroRaw : path.join(root,"openai-blog/hero.gif"),"-frames:v","1",
   path.join(root,"openai-blog/fullscreen-source.png")]);
 const browser=await launchBrowser();
 try {

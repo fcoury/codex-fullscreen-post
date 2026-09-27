@@ -79,17 +79,18 @@ const server=createServer((req,res)=>{
  #term{position:absolute;top:40px;left:24px}
  #cursor{position:absolute;left:-50px;top:-50px;width:22px;height:22px;pointer-events:none;z-index:10}
  #doc{position:absolute;right:28px;top:64px;width:600px;opacity:0;transform:translateY(24px);
-       transition:opacity .35s,transform .35s;background:#fbfbfa;color:#1d1d1f;border-radius:12px;
-       box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden;z-index:5;pointer-events:none}
+       transition:opacity .35s,transform .35s;background:#1d1e22;color:#e4e3de;border-radius:12px;
+       border:1px solid #34353b;box-shadow:0 24px 70px rgba(0,0,0,.6);overflow:hidden;z-index:5;pointer-events:none}
  #doc.show{opacity:1;transform:none}
- #doc .top{height:36px;background:#ececec;border-bottom:1px solid #dcdcdc;display:flex;align-items:center;
-       padding:0 14px;font-size:13px;color:#555;gap:8px}
+ #doc .top{height:36px;background:#26272c;border-bottom:1px solid #34353b;display:flex;align-items:center;
+       padding:0 14px;font-size:13px;color:#9a9a93;gap:8px}
  #doc .body{padding:22px 28px 26px;font-size:16px;line-height:1.55;min-height:150px}
  #doc h3{margin:0 0 10px;font-size:20px}#doc p{margin:0 0 10px}
- #doc pre{background:#f1f1ef;border:1px solid #e2e2de;border-radius:8px;padding:12px 14px;margin:0;
+ #doc pre{background:#141518;border:1px solid #303137;border-radius:8px;padding:12px 14px;margin:0;
        font:14px/1.5 "JetBrainsMono Nerd Font Mono","JetBrains Mono",monospace;white-space:pre}
- #doc code{font-family:"JetBrainsMono Nerd Font Mono","JetBrains Mono",monospace}
- .caret{display:inline-block;width:2px;height:19px;background:#1d1d1f;vertical-align:-4px;animation:b 1s steps(1) infinite}
+ #doc code{font-family:"JetBrainsMono Nerd Font Mono","JetBrains Mono",monospace;color:#93d4c0}
+ #doc pre code{color:#e4e3de}
+ .caret{display:inline-block;width:2px;height:19px;background:#e4e3de;vertical-align:-4px;animation:b 1s steps(1) infinite}
  @keyframes b{50%{opacity:0}}
  #keys{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);opacity:0;transition:opacity .2s;
        background:rgba(20,20,24,.9);color:#fff;border:1px solid #444;border-radius:10px;padding:8px 16px;

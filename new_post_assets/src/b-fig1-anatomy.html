@@ -1,7 +1,7 @@
 <!doctype html><html data-theme="dark" lang="en"><head><meta charset="utf-8">
 <link rel="stylesheet" href="a-fig.css">
 <style>
-.stage{position:relative;margin-top:18px;width:736px;height:547px;overflow:hidden;
+.stage{position:relative;margin-top:18px;width:736px;height:534px;overflow:hidden;
   border-radius:7px;outline:1px solid #484949;background:#0e0e10}
 .stage img{position:absolute;width:100%;height:100%;inset:0;display:block}
 .stage svg{position:absolute;inset:0;width:100%;height:100%}
@@ -19,16 +19,18 @@
 <h1>The fullscreen view</h1>
 <p class="intro">Scroll the conversation. Your controls stay where you left them.</p>
 <div class="stage">
-  <img src="../openai-blog/fullscreen-source.png" alt="Codex after one PageUp; captured from the recorded example session.">
-  <svg viewBox="0 0 1200 892" aria-hidden="true">
-    <rect class="boundary" x="10" y="37" width="1179" height="693" rx="6"/>
-    <rect class="soft" x="10" y="731" width="1179" height="23" rx="3"/>
-    <rect class="boundary" x="10" y="755" width="1179" height="69" rx="4"/>
-    <rect class="soft" x="10" y="826" width="1179" height="53" rx="4"/>
-    <g class="pin"><circle cx="1151" cy="79" r="21"/><text x="1151" y="79">1</text></g>
-    <g class="pin"><circle cx="995" cy="742" r="19"/><text x="995" y="742">2</text></g>
-    <g class="pin"><circle cx="1151" cy="789" r="21"/><text x="1151" y="789">3</text></g>
-    <g class="pin"><circle cx="1084" cy="849" r="21"/><text x="1084" y="849">4</text></g>
+  <img src="../openai-blog/fullscreen-source.png" alt="Codex after one PageUp, captured from the recorded example session on codex-cli 0.159.0-alpha.6.">
+  <svg viewBox="0 0 1200 870" aria-hidden="true">
+    <!-- Measured on the 1200×870 hero frame (gifs/out/hero.gif at 1.75s): transcript ends at y=706,
+         notice row 707–729, composer 730–800, status and hints 801–846. -->
+    <rect class="boundary" x="24" y="48" width="1150" height="659" rx="6"/>
+    <rect class="soft" x="24" y="709" width="1150" height="20" rx="3"/>
+    <rect class="boundary" x="24" y="731" width="1150" height="69" rx="4"/>
+    <rect class="soft" x="24" y="802" width="1150" height="45" rx="4"/>
+    <g class="pin"><circle cx="1134" cy="92" r="21"/><text x="1134" y="92">1</text></g>
+    <g class="pin"><circle cx="1010" cy="719" r="16"/><text x="1010" y="719">2</text></g>
+    <g class="pin"><circle cx="1134" cy="766" r="21"/><text x="1134" y="766">3</text></g>
+    <g class="pin"><circle cx="1134" cy="825" r="19"/><text x="1134" y="825">4</text></g>
   </svg>
 </div>
 <div class="key">
