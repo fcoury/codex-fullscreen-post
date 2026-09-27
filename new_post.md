@@ -1,14 +1,14 @@
 # Codex CLI goes fullscreen
 
-In *The 22 Immutable Laws of Marketing*, Al Ries and Jack Trout tell the story of a Listerine ad with an unlikely tagline: *"The taste you hate, twice a day."* It's their example of the Law of Candor. Admit a negative, and people will give you a positive. The ad worked because it said out loud what everyone already knew, and turned it into proof: if it tastes that strong, it must be doing something.
+Listerine once ran an ad with the tagline *"The taste you hate, twice a day."* It worked because it admitted what everyone already knew and turned it into proof: if it tastes that strong, it must be doing something.
 
-So, in that spirit: **Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you're going to notice.** Most of us on the team did. It took a couple of days for the new muscle memory to set in.
+So, in that spirit: Codex CLI 0.157.0 changes how selecting and copying text works in your terminal, and you'll notice. Most of us on the team did.
 
 But the change behind it makes Codex much better at long sessions, which is increasingly what people use it for. It also gives us a foundation to build new features that a plain scrolling terminal never could.
 
 ## What's new
 
-Codex CLI 0.157.0 is our largest update since launch. Its centerpiece is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
+The centerpiece of Codex CLI 0.157.0 is a new fullscreen view, where Codex takes over the whole terminal window, the same way `vim`, `top` or `lazygit` do. Instead of printing into your terminal's scrollback, Codex now draws and manages the entire screen: the transcript, the composer, the status line and everything in between.
 
 ![A long Codex session in fullscreen. The view pages up through dozens of turns while the composer stays pinned at the bottom, reaches the start of the session, then jumps back to the latest message.](new_post_assets/openai-blog/hero.gif)
 
@@ -61,7 +61,7 @@ Those are the defaults when Codex can tell which terminal you're in. Detection d
 
 A code-only selection copies as plain text. Over SSH the copy travels through your terminal, so you get the Markdown. And if you ever need your terminal's own selection, use its selection override while you drag; the modifier key varies from terminal to terminal.
 
-We're still smoothing out rough edges, so keep the reports coming. `/feedback` is the fastest way to reach us.
+Terminals, multiplexers and keybindings vary more than any of us can test, and we've surely missed some setups. If copying doesn't work the way you expect in yours, `/feedback` is the fastest way to tell us, and it's how most of these defaults got fixed.
 
 ## Where this is going
 
@@ -77,7 +77,7 @@ The first is /side, and this time it really is side by side. You can ask a quick
 
 We're also working on a pane that sits next to the transcript and shows information about the current conversation. If you've used the side panels in the Codex desktop app, it's similar, but built for the terminal.
 
-These are just a few initial ideas of features that the classic view could never support.
+These are early ideas, and they'll change as we build them and hear from you. What they share is that none of them could work in the classic view.
 
 ## Scrollback or fullscreen?
 
@@ -94,11 +94,11 @@ Fullscreen isn't free. Classic scrollback has real strengths, and they're why sw
 | **tmux and other multiplexers** | Their scrollback and copy mode see the whole conversation | They see the current screen; the history lives in Codex |
 | **After you quit** | The conversation stays in your terminal | Your terminal goes back to the shell; `codex resume` brings the session back |
 
-If you lean on tmux copy mode, want the conversation left in your terminal after you quit, or just prefer your terminal's own selection everywhere, scrollback may suit you better. For long sessions, fullscreen is the better fit.
+If you lean on tmux copy mode, want the conversation left in your terminal after you quit, or just prefer your terminal's own selection everywhere, scrollback may suit you better, and it isn't going away. We think fullscreen is the better fit for long sessions, but that's for you to decide.
 
 ## Give it a fair try
 
-We know we're asking for something. Fullscreen changes habits you've built over years, and the first day can feel off. So we'd like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.
+We know we're asking a lot. Fullscreen changes habits you've built over years, and we won't have gotten everything right on the first try. The first day can feel off. So we'd like you to give it a real chance: a few days, not a few minutes. It took most of us a couple of days, and copy-on-select makes the biggest adjustment much smaller.
 
 If it still isn't for you, the classic scrollback view is one command away:
 
@@ -108,6 +108,6 @@ If it still isn't for you, the classic scrollback view is one command away:
 
 Codex remembers your choice for future launches. To come back to fullscreen, run `/tui`, choose **Fullscreen**, and restart. If you manage your config by hand, the same switch is `fullscreen_transcript = false` under `[tui]`.
 
-Whichever view you land on, tell us how it goes. Run `/feedback` and let us know what would make fullscreen work for you.
+Whichever view you land on, tell us how it goes. Run `/feedback`. If fullscreen doesn't work for you, we want to know why, because that's what we'll fix next.
 
 The taste you'll notice, for a few days. The rest, we think you'll keep.
