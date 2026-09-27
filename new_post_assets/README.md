@@ -6,6 +6,20 @@ The CMS source is ../new_post.md, including standard Markdown GIFs and captions;
 post.json holds the header.
 Author and publication date are review fields, not a publication claim.
 
+The current draft (formerly V2) is `../new_post.md`. Its media is in
+`openai-blog/`; this directory also retains the common preview tools and
+templates. From the repository root, rebuild just the current HTML with:
+
+```sh
+npm --prefix new_post_assets run preview
+open new_post_preview.html
+```
+
+R1 is archived separately as `../new_post_r1.md`,
+`../new_post_r1_preview.html`, and `../new_post_r1_assets/`. Open the R1
+HTML directly to see that version. Rebuilding the current preview does not
+change it.
+
 ## Build the article and figures
 
 Requirements: Node 24+, Python 3.11+, ffmpeg/ffprobe (GIF encoder). Run from the
