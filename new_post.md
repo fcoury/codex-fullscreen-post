@@ -68,9 +68,9 @@ We're still smoothing out rough edges, so keep the reports coming. `/feedback` i
 
 ## Where this is going
 
-Long sessions are the benefit you get today. The bigger reason we made this change is what comes next.
+Long sessions and multi format copy and paste are the benefits you get today. The bigger reason we made this change is what comes next.
 
-A scrolling log can only add lines at the bottom. Once Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we're building on top of it:
+Now Codex owns the whole screen, it can put things side by side, update them in place, and give each kind of information its own space. A few things we're building on top of it:
 
 ![Codex keeps the main conversation on the left while a side conversation answers a quick question on the right, each with its own composer.](new_post_assets/openai-blog/side.gif)
 
