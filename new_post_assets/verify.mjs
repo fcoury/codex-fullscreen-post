@@ -57,7 +57,7 @@ try{
     assert.deepEqual(report.missingAlts,[],"missing alt");
     assert.equal(report.titles,1);
     assert.equal(report.videos,0);
-    assert.equal(report.gifs.length,4); // hero, copy, paste-both, side
+    assert.equal(report.gifs.length,3);
     assert(report.gifs.every(src=>src.endsWith(".gif")),"inline GIF missing");
     assert(report.figures.every(Boolean));
     assert(report.targets.every(Boolean));

@@ -54,13 +54,9 @@ In fullscreen, Codex handles text selection itself, and that changes a habit you
 
 There's a bright side to Codex owning the selection. Your terminal only sees characters on a screen, but Codex knows what they are: a paragraph, a list, a code block. So when your selection includes prose, Codex puts two versions on your local clipboard: the raw Markdown as plain text, and the same content as formatted HTML. Paste into your editor, a terminal or a Markdown field and you get the Markdown, with backticks and code fences intact. Paste into a doc, an email or a chat app and you get real paragraphs, inline code and code blocks.
 
-![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer, and pasting into a notes app keeps the paragraph, the inline code and the code block.](new_post_assets/openai-blog/copy.gif)
+![Dragging across a reply and its code block in Codex. "Copied 187 chars to host clipboard" appears above the composer. The same copy is then pasted twice: a plain-text editor gets the raw Markdown with backticks and code fences, and a notes app gets a formatted paragraph, inline code and a code block.](new_post_assets/openai-blog/copy.gif)
 
-*Copy-on-select in an example session, then pasting into a notes app.*
-
-![The clipboard from that copy, pasted into two apps. A plain-text editor shows the raw Markdown with backticks and code fences; a notes app shows a formatted paragraph, inline code and a code block.](new_post_assets/openai-blog/paste-both.gif)
-
-*One copy, pasted twice: a Markdown editor gets the Markdown, and a notes app gets the formatting.*
+*Copy-on-select in an example session, then one copy pasted twice: a Markdown editor gets the Markdown, and a notes app gets the formatting.*
 
 **In Ghostty 1.2+, kitty on macOS, Windows Terminal and VS Code on Windows, your usual copy shortcut keeps working.** Most other terminals, including Terminal.app and iTerm2, keep that shortcut for themselves. For those, Codex copies the moment you finish selecting, so you don't need a shortcut. The same goes for anything inside tmux or Zellij.
 

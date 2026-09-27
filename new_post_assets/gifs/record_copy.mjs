@@ -1,5 +1,6 @@
 // Record the copy-on-select GIF: drag-select a code block in Codex, show the
-// "Copied" confirmation, then paste the real clipboard HTML into a document.
+// "Copied" confirmation, then paste the real clipboard twice: the Markdown into an
+// editor and the HTML into a notes app.
 //
 // VHS can't drive the mouse, so this runs Codex in ttyd, drives headless Chrome
 // with puppeteer-core, screenshots frames, and assembles them with ffmpeg.
@@ -42,14 +43,26 @@ const host = `<!doctype html><html><head><style>
   .dot{position:absolute;top:12px;width:12px;height:12px;border-radius:50%}
   iframe{position:absolute;left:${PAD}px;top:${BAR}px;width:${W - 2 * PAD}px;height:${H - BAR - PAD}px;border:0}
   #cursor{position:absolute;left:-50px;top:-50px;width:22px;height:22px;pointer-events:none;z-index:10}
-  #doc{position:absolute;right:28px;top:64px;width:600px;height:0;opacity:0;transform:translateY(24px);
+  .win{position:absolute;top:64px;width:560px;opacity:0;transform:translateY(24px);
        transition:opacity .35s,transform .35s;background:#1d1e22;color:#e4e3de;border-radius:12px;
        border:1px solid #34353b;box-shadow:0 24px 70px rgba(0,0,0,.6);overflow:hidden;z-index:5}
-  #doc.show{opacity:1;transform:none;height:auto}
-  #doc .top{height:36px;background:#26272c;border-bottom:1px solid #34353b;display:flex;align-items:center;
+  .win.show{opacity:1;transform:none}
+  #ed{left:28px} #doc{right:28px}
+  .win .top{height:36px;background:#26272c;border-bottom:1px solid #34353b;display:flex;align-items:center;
        padding:0 14px;font-size:13px;color:#9a9a93;gap:8px}
-  #doc .top i{width:11px;height:11px;border-radius:50%;display:inline-block}
-  #doc .body{padding:22px 28px 26px;font-size:16px;line-height:1.55;min-height:150px}
+  .win .top i{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .win .top span{margin-left:8px}
+  .win .top em{margin-left:auto;font:normal 12px "JetBrains Mono",monospace;color:#93d4c0;
+       border:1px solid #34353b;background:#141518;border-radius:6px;padding:1px 7px}
+  /* Plain-text editor: numbered logical lines, soft-wrapped */
+  #ed .body{padding:16px 18px 18px 0;font:14px/23px "JetBrains Mono",monospace;min-height:150px;counter-reset:ln}
+  #ed .ln{position:relative;padding-left:58px;white-space:pre-wrap}
+  #ed .ln::before{counter-increment:ln;content:counter(ln);position:absolute;left:0;width:44px;
+       text-align:right;color:#6c6c66}
+  #ed .ln.empty::after{content:" "}
+  #ed .fence,#ed .tick{color:#6c6c66} #ed .ic{color:#93d4c0}
+  /* Rich-text notes */
+  #doc .body{padding:22px 26px 24px;font-size:16px;line-height:1.55;min-height:150px}
   #doc h3{margin:0 0 10px;font-size:20px}
   #doc p{margin:0 0 10px}
   #doc pre{background:#141518;border:1px solid #303137;border-radius:8px;padding:12px 14px;margin:0;
@@ -58,7 +71,7 @@ const host = `<!doctype html><html><head><style>
   #doc pre code{color:#e4e3de}
   .caret{display:inline-block;width:2px;height:19px;background:#e4e3de;vertical-align:-4px;animation:b 1s steps(1) infinite}
   @keyframes b{50%{opacity:0}}
-  #keys{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);opacity:0;transition:opacity .2s;
+  #keys{position:absolute;left:50%;top:420px;transform:translateX(-50%);opacity:0;transition:opacity .2s;
        background:rgba(20,20,24,.9);color:#fff;border:1px solid #444;border-radius:10px;padding:8px 16px;
        font:600 20px -apple-system,system-ui;z-index:20}
 </style></head><body>
@@ -70,8 +83,11 @@ const host = `<!doctype html><html><head><style>
 <iframe src="http://127.0.0.1:${PORT}/"></iframe>
 <svg id="cursor" viewBox="0 0 22 22"><path d="M5 2v16l4.2-4 2.8 6.3 2.4-1-2.8-6.2H17z"
   fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg>
-<div id="doc"><div class="top"><i style="background:#ff5f58"></i><i style="background:#ffbd2e"></i>
-  <i style="background:#18c132"></i><span style="margin-left:8px">PR description — Notes</span></div>
+<div class="win" id="ed"><div class="top"><i style="background:#ff5f58"></i><i style="background:#ffbd2e"></i>
+  <i style="background:#18c132"></i><span>pr-description.md — Editor</span><em>text/plain</em></div>
+  <div class="body" id="edpaste"><div class="ln"><span class="caret"></span></div></div></div>
+<div class="win" id="doc"><div class="top"><i style="background:#ff5f58"></i><i style="background:#ffbd2e"></i>
+  <i style="background:#18c132"></i><span>PR description — Notes</span><em>text/html</em></div>
   <div class="body"><h3>Opt in to refill jitter</h3><div id="paste"><span class="caret"></span></div></div></div>
 <div id="keys">⌘V</div>
 </body></html>`;
@@ -194,24 +210,44 @@ await sleep(200);
 await page.mouse.up();
 await sleep(2200);
 
-// Paste the real clipboard HTML into the document window.
+// Read both clipboard flavors Codex wrote.
 const hex = execFileSync("osascript", ["-e", "the clipboard as «class HTML»"]).toString();
 const html = Buffer.from(hex.match(/«data HTML([0-9A-F]*)»/)?.[1] ?? "", "hex").toString("utf8");
 const plain = execFileSync("pbpaste").toString();
 fs.writeFileSync(path.join(here, "out", "copy-clipboard.html"), html);
 fs.writeFileSync(path.join(here, "out", "copy-clipboard.txt"), plain);
-await glide({ x: W * 0.72, y: H * 0.45 }, 500);
-await page.evaluate(() => document.getElementById("doc").classList.add("show"));
-await sleep(900);
-await page.evaluate(() => (document.getElementById("keys").style.opacity = 1));
-await sleep(450);
-await page.evaluate((h) => {
+// One copy, pasted twice: the Markdown (text/plain) into an editor, then the
+// HTML (text/html) into a notes app, like the two halves of the clipboard.
+async function pasteInto(win, x, fill) {
+  await glide({ x, y: 250 }, 550);
+  await page.evaluate((id) => document.getElementById(id).classList.add("show"), win);
+  await sleep(750);
+  await page.evaluate((x) => {
+    const k = document.getElementById("keys");
+    k.style.left = x + "px"; k.style.opacity = 1;
+  }, x);
+  await sleep(400);
+  await fill();
+  await sleep(350);
+  await page.evaluate(() => (document.getElementById("keys").style.opacity = 0));
+}
+await pasteInto("ed", 308, () => page.evaluate((text) => {
+  const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  let inFence = false;
+  document.getElementById("edpaste").innerHTML = text.replace(/\n$/, "").split("\n").map((line) => {
+    let body;
+    if (line.startsWith("```")) { inFence = !inFence; body = `<span class="fence">${esc(line)}</span>`; }
+    else if (inFence) body = esc(line);
+    else body = esc(line).replace(/`([^`]+)`/g, '<span class="tick">`</span><span class="ic">$1</span><span class="tick">`</span>');
+    return `<div class="ln${line ? "" : " empty"}">${body}</div>`;
+  }).join("");
+}, plain));
+await sleep(1100);
+await pasteInto("doc", W - 308, () => page.evaluate((h) => {
   const body = h.replace(/^[\s\S]*<body[^>]*>/i, "").replace(/<\/body>[\s\S]*$/i, "");
-  document.getElementById("paste").innerHTML = body + '<span class="caret"></span>';
-}, html);
-await sleep(350);
-await page.evaluate(() => (document.getElementById("keys").style.opacity = 0));
-await sleep(2400);
+  document.getElementById("paste").innerHTML = body;
+}, html));
+await sleep(2600);
 
 capturing = false;
 await capture;
