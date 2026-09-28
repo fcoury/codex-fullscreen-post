@@ -1,6 +1,6 @@
 {
-  "version": "codex-cli 0.159.0-alpha.6",
-  "binary": "npm install via vite-plus (codex on PATH)",
+  "version": "codex-cli 0.158.0",
+  "binary": "standalone install (~/.codex/packages/standalone, codex on PATH)",
   "recorder": "vhs hero.tape",
   "columns": 120,
   "rows": 35,

@@ -129,7 +129,7 @@ Hero uses VHS; copy uses record_copy.mjs, because VHS can't drag the mouse.
 ```sh
 brew install vhs gifsicle webp && brew install --cask font-jetbrains-mono
 cd new_post_assets/gifs && npm install
-export CODEX_BIN=$(command -v codex)            # check: $CODEX_BIN --version
+export CODEX_BIN=$(readlink -f "$(command -v codex)")   # must be the native binary, not a Node shim; check: $CODEX_BIN --version
 export DEMO_ROOT=$(SCENARIO_NAME=hero ./setup_demo.sh) && vhs hero.tape          # out/hero.gif
 export DEMO_ROOT=$(SCENARIO_NAME=copy ./setup_demo.sh) && node record_copy.mjs   # out/copy.gif
 gifsicle -O3 --lossy=40 --colors 128 out/hero.gif -o ../openai-blog/hero.gif
@@ -169,10 +169,11 @@ env CODEX_BIN=/absolute/path/from/build_source.py bash new_post_assets/gifs/nati
 
 ## Status for review
 
-- Hero/copy are recorded on the released codex-cli 0.159.0-alpha.6 (see
+- Hero/copy are recorded on the stable codex-cli 0.158.0 (see
   "Recording hero and copy on a release build"), so their session header is the
-  boxed card, not #10754's compact banner. Earlier hero/copy takes from #10754 at
-  a4f03a05f940 are in this branch's history. fig1 is a frame from the alpha.6 hero.
+  boxed card, not #10754's compact banner. Earlier takes (#10754 at a4f03a05f940,
+  then 0.159.0-alpha.6) are in this branch's history. fig1, collapsed-output.webp
+  and hero-poster.webp are frames from the 0.158.0 hero (1.75s, 1.75s, 2.55s).
 - Side is from fcoury/fullscreen-post-side-recording at fd657137e303: #10754
   plus published #9996 at e6245d52f10d and its #10107/#10104 ancestors.
   Both builds completed with matching CLI + host. Only integration conflicts

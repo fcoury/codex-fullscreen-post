@@ -1,10 +1,10 @@
 {
-  "version": "codex-cli 0.159.0-alpha.6",
-  "binary": "npm install via vite-plus (codex on PATH)",
+  "version": "codex-cli 0.158.0",
+  "binary": "standalone install (~/.codex/packages/standalone, codex on PATH)",
   "recorder": "node record_copy.mjs",
   "columns": 120,
   "rows": 35,
   "fixtureRequests": 0,
-  "frames": 279,
+  "frames": 227,
   "scenario": "copy"
 }
