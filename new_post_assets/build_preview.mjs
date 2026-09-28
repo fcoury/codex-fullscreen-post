@@ -22,7 +22,8 @@ renderer.heading = (text, level) => {
 renderer.table = (head, body) => `<div class="table-scroll" tabindex="0"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 marked.setOptions({renderer, gfm:true});
 let body = marked.parse(md);
-let firstGif = true;
+// The scrolling demo plays on request, wherever it sits in the post.
+const manualGif = "/hero.gif";
 // Standard Markdown images + italic caption remain portable to the CMS.
 body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>((?:(?!<\/p>)[\s\S])*?)<\/em><\/p>/g, (_,img,caption) => {
   const image = img.replace("<img ", '<img loading="lazy" decoding="async" ');
@@ -31,8 +32,7 @@ body = body.replace(/<p>(<img [^>]+>)<\/p>\s*<p><em>((?:(?!<\/p>)[\s\S])*?)<\/em
   const poster = src.replace(/\.gif$/, "-poster.webp");
   if (!fs.existsSync(path.join(root, src)) || !fs.existsSync(path.join(root, poster)))
     throw Error("Missing GIF or reduced-motion still: " + src);
-  if (firstGif) {
-    firstGif = false;
+  if (src.endsWith(manualGif)) {
     const still = image.replace(`src="${src}"`, `id="intro-demo" src="${poster}"`);
     return `<figure class="gif gif-manual"><a href="${src}" aria-label="Open full size animation">
     ${still}</a>

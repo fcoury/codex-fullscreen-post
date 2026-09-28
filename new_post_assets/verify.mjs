@@ -43,7 +43,10 @@ try{
       broken:images.filter(i=>!i.complete||!i.naturalWidth).map(i=>i.src),
       missingAlts:images.filter(i=>!i.alt.trim()).map(i=>i.src),
       videos:document.querySelectorAll("video").length,
-      gifs:[...document.querySelectorAll("figure.gif img")].map(i=>i.currentSrc),
+      gifs:[...document.querySelectorAll("figure.gif:not(.gif-manual) img")].map(i=>i.currentSrc),
+      manual:[...document.querySelectorAll("figure.gif-manual")].map(f=>({
+        still:f.querySelector("img").currentSrc, href:f.querySelector("a").getAttribute("href"),
+        control:!f.querySelector(".demo-control").hidden})),
       titles:document.querySelectorAll("h1").length,
       figures:figures.map(f=>!!f.querySelector("figcaption")),
       targets:[...document.querySelectorAll("aside a")].map(a=>!!document.getElementById(a.hash.slice(1))),
@@ -57,8 +60,12 @@ try{
     assert.deepEqual(report.missingAlts,[],"missing alt");
     assert.equal(report.titles,1);
     assert.equal(report.videos,0);
-    assert.equal(report.gifs.length,3);
+    assert.equal(report.gifs.length,2);
     assert(report.gifs.every(src=>src.endsWith(".gif")),"inline GIF missing");
+    // The scrolling demo starts as its still and plays on request.
+    assert.equal(report.manual.length,1);
+    const [demo]=report.manual;
+    assert(demo.still.endsWith("hero-poster.webp")&&demo.href.endsWith("hero.gif")&&demo.control,"scrolling demo still or control missing");
     assert(report.figures.every(Boolean));
     assert(report.targets.every(Boolean));
     assert.equal(report.cover,width<576?230:300);
@@ -72,6 +79,13 @@ try{
    }
   }
  }
+ // Playing the demo swaps in the GIF; stopping restores the still.
+ const played=await page.evaluate(async()=>{
+  const control=document.querySelector(".gif-manual .demo-control"), img=document.getElementById("intro-demo");
+  control.click(); await img.decode(); const on=img.currentSrc;
+  control.click(); await img.decode(); return {on,off:img.currentSrc};
+ });
+ assert(played.on.endsWith("hero.gif")&&played.off.endsWith("hero-poster.webp"),"scrolling demo does not play");
  await page.emulateMediaFeatures([{name:"prefers-reduced-motion",value:"reduce"}]);
  assert.equal(await page.evaluate(()=>matchMedia("(prefers-reduced-motion: reduce)").matches),true);
  await page.waitForFunction(()=>[...document.querySelectorAll("figure.gif img")]
